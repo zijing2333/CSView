@@ -48,7 +48,7 @@ export default hopeTheme({
   favicon: '/logo.png',
 
   // 图标
-  iconAssets: "//at.alicdn.com/t/c/font_3888455_5ydvkkln7qr.css",
+  iconAssets: "//at.alicdn.com/t/c/font_3888455_9aawfyfr1r6.css",
 
   // 面包屑导航
   breadcrumb:false,

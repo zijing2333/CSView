@@ -6,7 +6,7 @@
 // );
 
 $home-page-width:70em;
-$theme-color:#16a085;
+$theme-color:#2980b9;
 $sidebar-width: 17rem;
 $sidebar-mobile-width: 16rem;
 // $bg-color: (
@@ -28,7 +28,7 @@ $border-color: (
   background: #d35400;
   color: #fffdfd;
   font-size: 1.3rem;
-  // transition: color var(--color-transition), color var(--color-transition), transform var(--transform-transition);
+  transition: color var(--color-transition), color var(--color-transition), transform var(--transform-transition);
 }
 
 .hero-info-wrapper img {
@@ -53,9 +53,9 @@ h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-.sidebar > .sidebar-links > li > .sidebar-link {
-  font-size: 1.0em;
-}
+// .sidebar > .sidebar-links > li > .sidebar-link {
+//   font-size: 1.0em;
+// }
 
 
 

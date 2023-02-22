@@ -12,10 +12,10 @@ actions:
     link: /start-learning
     type: primary
 
-  - text: 项目介绍
+  - text: 面经汇总
     link: /introduction
 
-footer: 备案号：<a href="https://beian.miit.gov.cn/" target="_blank">吉ICP备2023000735号</a>
+footer: 备案号：<a href="https://beian.miit.gov.cn/" target="_blank">吉ICP备2023000735号-2</a>
 
 ---
 

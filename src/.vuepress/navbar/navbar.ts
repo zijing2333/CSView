@@ -97,26 +97,14 @@ export const navBar = navbar([
   },
 
   {
-    text: "招聘投递网址",
-    icon: "zhaopin",
-    children: [
-      {
-        text: "官方网址",
-        icon: "qidongzhaopinguanli",
-        link: "/offical-delivery/",
-      },
-      {
-        text: "内推信息",
-        icon: "qidongzhaopinshenpi",
-        link: "/recommendation-delivery/",
-      },
-    ],
-  },
-
-  {
     text: "关于本站",
     icon: "guanyu",
     children: [
+      {
+        text: "项目介绍",
+        icon: "jieshaoxinxi",
+        link: "/introduction",
+      },
       {
         text: "开发日志",
         icon: "rizhi",
