@@ -29,7 +29,7 @@ Redis 在启动的时候，会启动后台线程(BIO)：
 
 
 
-### Redis6.0为什么要引入多线程？<Badge text="掌握" type="tip" />
+### Redis为什么要引入多线程？<Badge text="掌握" type="tip" />
 
 因为Redis的瓶颈不在内存，而是在网络I/O模块带来CPU的耗时，所以Redis6.0的多线程是用来处理网络I/O这部分，充分利用CPU资源，减少网络I/O阻塞带来的性能损耗。Redis引入的多线程 I/O 特性对性能提升至少是一倍以上。
 

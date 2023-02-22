@@ -6,6 +6,33 @@
 
 
 
+### struct能不能比较？<Badge text="掌握" type="tip" />
+
+不同类型的结构体，如果成员变量类型、变量名和顺序都相同，而且结构体没有不可比较字段时，那么进行显式类型转换后就可以比较，反之不能比较。
+
+同类型的struct分为两种情况：
+
+- struct的所有成员都是可以比较的，则该strcut的不同实例可以比较
+- struct中含有不可比较的成员，则该struct不可以比较
+
+当需要比较两个struct内容时，最好使用reflect.DeepEqual方法进行比较，无论什么类型均可满足比较要求。
+
+::: tip 不可比较的类型
+
+- slice，因为slice是引用类型，除非和nil比较
+- map，和slice同理，如果要比较两个map只能通过循环遍历实现
+- 函数类型，不能比较
+
+:::
+
+
+
+### 为什么slice之间不能直接比较？<Badge text="了解" type="info" />
+
+因为slice的元素是间接引用的，一个slice甚至可以包含自身，slice的变量实际是一个指针，使用 == 其实在判断地址。
+
+
+
 ### slice的底层实现？<Badge text="重要" type="danger" />
 
 切片的底层是一个结构体，对应三个参数，一个是**unsafe.Pointer指针**，指向一个具体的底层数组，一个是**cap**，切片的容量，一个是**len**，切片的长度。
@@ -56,13 +83,81 @@ type slice struct {
 
 
 
-### slice是线程安全的吗？
+### slice是线程安全的吗？<Badge text="了解" type="info" />
 
 不是。slice底层结构并没有使用加锁等方式，不支持并发读写，所以并不是线程安全的，使用多个goroutine对类型为slice的变量进行操作，每次输出的值大概率都不会一样，与预期值不一致; slice在并发执行中不会报错，但是数据会丢失。
 
 **实现线程安全的方法**：
 
 互斥锁，读写锁，原子操作，sync.once，sync.atomic，channel。
+
+
+
+### slice之间怎么进行比较？<Badge text="掌握" type="tip" />
+
+```go
+func equal(x, y []int) bool {
+    if len(x) != len(y) {
+        return false
+    }
+    for i := range x {
+        if x[i] != y[i] {
+            return false
+        }
+    }
+    return true 
+}
+```
+
+
+
+### map之间如何进行比较？<Badge text="了解" type="info" />
+
+```go
+func equal(x, y map[string]int) bool {
+    if len(x) != len(y) {
+        return false
+    }
+    for k, xv := range x {
+        if yv, ok := y[k]; !ok || yv != xv {
+            return false
+        }
+    }
+    return true 
+}
+```
+
+
+
+### map如何实现顺序读取？<Badge text="了解" type="info" />
+
+map不能顺序读取，是因为他是无序的，想要有序读取，需要把key变为有序，所以可以把key放入切片，对切片进行排序，遍历切片，通过key取值。
+
+```go
+package main
+
+import (
+    "fmt"
+    "sort"
+)
+
+func main() {
+    var m = map[string]int{
+        "hello":         0,
+        "morning":       1,
+        "keke":          2,
+        "jame":   		 3,
+    }
+    var keys []string
+    for k := range m {
+        keys = append(keys, k)
+    }
+    sort.Strings(keys)
+    for _, k := range keys {
+        fmt.Println("Key:", k, "Value:", m[k])
+    }
+}
+```
 
 
 
@@ -310,6 +405,34 @@ for _, url := range urls {
 
 
 
+### select的用途？<Badge text="重要" type="danger" />
+
+select可以理解为是在语言层面实现了和I/O多路复用相似的功能：监听多个描述符的读/写等事件，一旦某个描述符就绪(一般是读或者写事件发生了)，就能够将发生的事件通知给关心的应用程序去处理该事件。
+
+golang的select机制是：监听多个channel，每一个case是一个事件，可以是读事件也可以是写事件，**随机选择一个执行**。可以设置default，它的作用是当监听的多个事件都阻塞住就会执行default的逻辑。
+
+```go
+select {
+    case <-ch1:
+        // 如果从 ch1 信道成功接收数据，则执行该分支代码
+    case ch2 <- 1:
+        // 如果成功向 ch2 信道成功发送数据，则执行该分支代码
+    default:
+        // 如果上面都没有成功，则进入 default 分支处理流程
+}
+```
+
+::: tip 提示
+
+- select语句只能用于信道的读写操作
+- select中的case条件(非阻塞)是并发执行的，select会选择先操作成功的那个case条件去执行，如果多个同时返回，则随机选择一个执行，此时将无法保证执行顺序
+- 对于case条件语句中，如果存在信道值为nil的读写操作，则该分支将被忽略，可以理解为从select语句中删除了这个case语句
+- 如果有超时条件语句，判断逻辑为如果在这个时间段内一直没有满足条件的case，则执行这个超时case。如果此段时间内出现了可操作的case，则直接执行这个case。一般用超时语句代替了default语句
+- 对于空的select{}，会引起死锁
+- 对于for中的select{}, 可能会引起cpu占用过高的问题
+
+:::
+
 ### defer的概述？<Badge text="重要" type="danger" />
 
 defer是go语言提供的一种用于注册延迟调用的机制：让函数或者语句在当前函数执行完毕(**包括return正常结束或者panic导致的异常结束**)之后进行调用。defer具有以下特性：
@@ -514,7 +637,7 @@ go 的一行**函数返回 return**语句对应非原子操作的多行汇编指
 
 
 
-### WaitGroup？
+### WaitGroup使用的注意事项？
 
 - **Add一个负数**：如果计数器的值小于0会直接panic。
 

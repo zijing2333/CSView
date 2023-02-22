@@ -23,9 +23,9 @@ $border-color: (
   // display: inline-block;
   // overflow: hidden;
   margin: 0.6rem;
-  // padding: 0.5em 2rem;
-  // border-radius: 2.5rem;
-  background: #d35400;
+  padding: 0.5em 1.7rem;
+  border-radius: 3rem;
+  background: #67a52e;
   color: #fffdfd;
   font-size: 1.3rem;
   transition: color var(--color-transition), color var(--color-transition), transform var(--transform-transition);
@@ -53,9 +53,9 @@ h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
-// .sidebar > .sidebar-links > li > .sidebar-link {
-//   font-size: 1.0em;
-// }
+.sidebar > .sidebar-links > li > .sidebar-link {
+  font-size: 1.0em;
+}
 
 
 
