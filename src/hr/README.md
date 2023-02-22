@@ -1,5 +1,6 @@
 ---
 title: HR面常见面试题
+sidebar: heading
 ---
 
 ### 你的优势和劣势是什么？

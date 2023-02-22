@@ -3,11 +3,11 @@ import { navbar } from "vuepress-theme-hope";
 export const navBar = navbar([
 
   {
-    text: "面试必刷算法",
+    text: "面试题",
     icon: "suanfaku",
     children: [
       {
-        text: "必刷算法100题",
+        text: "力扣高频必刷题",
         icon: "zhongdianbiaozhu",
         link: "/algorithm-mandatory/",
 

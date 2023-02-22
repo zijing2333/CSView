@@ -44,6 +44,45 @@
         return ans;
     }
 ```
+@tab java
+
+```java
+class Solution {
+    private boolean[][] visited;
+    private int res;
+    private static int[][] opt = {{-1, 0}, {1, 0}, {0, 1}, {0, -1}};
+
+    public int numIslands(char[][] grid) {
+        if(grid == null || grid.length == 0 || grid[0].length == 0) return 0;
+        int m = grid.length;
+        int n = grid[0].length;
+        visited = new boolean[m][n];
+        for(int i=0;i<m;i++) {
+            for(int j=0;j<n;j++) bfs(grid, i, j);
+        }
+        return res;
+    }
+
+    private void bfs(char[][] grid, int i, int j) {
+        if(visited[i][j] || grid[i][j] == '0') return;
+        res++;
+        Deque<int[]> queue = new ArrayDeque<>();
+        queue.addLast(new int[]{i, j});
+        while(!queue.isEmpty()) {
+            int[] cur = queue.removeFirst();
+            visited[cur[0]][cur[1]] = true;
+            for(int k=0;k<4;k++) {
+                int ni = cur[0] + opt[k][0];
+                int nj = cur[1] + opt[k][1];
+                if(ni < 0 || ni >= grid.length || nj < 0 || nj >= grid[0].length) continue;
+                if(visited[ni][nj] || grid[ni][nj] == '0') continue;
+                visited[ni][nj] = true;
+                queue.addLast(new int[]{ni, nj});
+            }
+        }
+    }
+}
+```
 
 @tab golang
 
@@ -125,7 +164,35 @@ public:
     }
 };
 ```
-@golang
+@tab java
+
+```java
+class Solution {
+    private List<String> res = new ArrayList<>();
+
+    public List<String> generateParenthesis(int n) {
+        StringBuilder cur = new StringBuilder();
+        dfs(cur, n, n);
+        return res;
+    }
+
+    private void dfs(StringBuilder cur, int left, int right) {
+        if(left > right) return;
+        if(left < 0 || right < 0) return;
+        if(left == 0 && right == 0) {
+            res.add(cur.toString());
+            return;
+        }
+        cur.append("(");
+        dfs(cur, left-1, right);
+        cur.deleteCharAt(cur.length()-1);
+        cur.append(")");
+        dfs(cur, left, right-1);
+        cur.deleteCharAt(cur.length()-1);
+    }
+}
+```
+@tab golang
 
 ```go
 func generateParenthesis(n int) []string {
@@ -149,7 +216,7 @@ func generateParenthesis(n int) []string {
 	return res
 }
 ```
-
+:::
 
 
 ### [695.岛屿的最大面积](https://leetcode.cn/problems/max-area-of-island)
@@ -204,6 +271,35 @@ public:
     }
 };
 ```
+@tab java 
+```java
+class Solution {
+    public int maxAreaOfIsland(int[][] grid) {
+        int res = 0; 
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] == 1) {
+                    res = Math.max(res, dfs(i, j, grid));
+                }
+            }
+        } 
+        return res;
+    }
+    private int dfs(int i, int j, int[][] grid) {
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[i].length || grid[i][j] == 0) { 
+            return 0;
+        } 
+        grid[i][j] = 0;
+        int num = 1;
+        num += dfs(i + 1, j, grid);
+        num += dfs(i - 1, j, grid);
+        num += dfs(i, j + 1, grid);
+        num += dfs(i, j - 1, grid);
+        return num;
+        
+    }
+}
+```
 @tab golang
 
 ```go
@@ -242,3 +338,4 @@ func max(a,b int) int{
     return b
 }
 ```
+:::

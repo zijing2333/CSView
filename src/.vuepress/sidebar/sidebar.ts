@@ -61,16 +61,16 @@ export const sideBar = sidebar({
 
 
     "/algorithm-mandatory/":[
-      { text: "链表", link: "linklist"},
-      { text: "树", link: "tree"},
-      { text: "栈和队列", link: "stark-queue"},
-      { text: "字符串", link: "string"},
-      { text: "数组", link: "array"},
-      { text: "动态规划", link: "dp"},
-      { text: "DFS", link: "dfs"},
-      { text: "回溯", link: "backtrack"},
-      { text: "手撕", link: "handtearing"},
-      { text: "其他", link: "other"},
+      { text: "🔴 链表", link: "linklist"},
+      { text: "🟤 树", link: "tree"},
+      { text: "🔵 栈和队列", link: "stark-queue"},
+      { text: "🟢 字符串", link: "string"},
+      { text: "🟣 数组", link: "array"},
+      { text: "🟠 动态规划", link: "dp"},
+      { text: "🟡 DFS", link: "dfs"},
+      { text: "⚫ 回溯", link: "backtrack"},
+      { text: "⚪ 手撕", link: "handtearing"},
+      { text: "🔶 其他", link: "other"},
     ],
     
 

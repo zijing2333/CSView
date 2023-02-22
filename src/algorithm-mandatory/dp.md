@@ -125,6 +125,21 @@ func min(x, y int) int {
 ```
 @tab java
 ```java
+class Solution {
+    public int maxSubArray(int[] nums) {
+        int ans = nums[0];
+        int sum = 0;
+        for(int num: nums) {
+            if(sum > 0) {
+                sum += num;
+            } else {
+                sum = num;
+            }
+            ans = Math.max(ans, sum);
+        }
+        return ans;
+    }
+}
 ```
 
 @tab golang
@@ -1071,8 +1086,38 @@ func wordBreak(s string,wordDict []string) bool  {
 > 给定一个包含非负整数的 `m x n` 网格 `grid` ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
 >
 > **说明：**每次只能向下或者向右移动一步。
+**解题思路**：
+- dp[i][j]表示从(0,0)到i，j所需要的最短路径。
+- 比较容易看出来，dp[i][j]由dp[i - 1][j]与dp[i][j - 1]更新得到，因为只能往下走往游走。
+- dp[i][j] = min(dp[i][j - 1], dp[i - 1][j]) + grid[i][j]
+- 注意一下边界条件
 ::: code-tabs
-
+@tab cpp
+```cpp
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int n = grid.size(), m = grid[0].size();
+        vector<vector<int>> dp(n, vector<int>(m));
+        dp[0][0] = grid[0][0];
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(i == 0 && j == 0) {
+                    continue;
+                }
+                if(i == 0) {
+                    dp[i][j] = dp[i][j - 1] + grid[i][j];
+                }else if(j == 0) {
+                    dp[i][j] = dp[i - 1][j] + grid[i][j];
+                }else {
+                    dp[i][j] = min(dp[i][j - 1], dp[i - 1][j]) + grid[i][j];
+                }
+            }
+        }
+        return dp[n - 1][m - 1];
+    }
+};
+```
 @tab java
 ```java
 class Solution {

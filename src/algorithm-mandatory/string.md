@@ -4,7 +4,43 @@
 >
 > 注意：不能使用任何内置的 BigInteger 库或直接将输入转换为整数。
 >
+::: code-tabs
 
+@tab java
+```java
+class Solution {
+    
+    public String multiply(String num1, String num2) {
+		if (num1.equals("0") || num2.equals("0")) {
+			return "0";
+		}
+		int length1 = num1.length();
+		int length2 = num2.length();
+		StringBuilder str = new StringBuilder();
+
+		int[] arrayInt = new int[length1 + length2];
+
+		for (int i = length1 - 1; i >= 0; i--) {
+			for (int z = length2 - 1; z >= 0; z--) {
+				int number1 = num1.charAt(i) - 48;
+				int number2 = num2.charAt(z) - 48;
+				arrayInt[i + z] += number1 * number2;
+				if (arrayInt[i + z] >= 10 && (i + z) != 0) {
+					arrayInt[i + z - 1] += arrayInt[i + z] / 10;
+					arrayInt[i + z] = arrayInt[i + z] % 10;
+				}
+			}
+		}
+
+		for (int i = 0; i <= length1 + length2 - 2; i++) {
+			str.append(arrayInt[i]);
+		}
+
+		return str.toString();
+	}
+}
+```
+@tab golang
 ```go
 func multiply(num1 string, num2 string) string {
 	if num1 == "0" || num2 == "0" {return "0"}
@@ -29,7 +65,7 @@ func multiply(num1 string, num2 string) string {
 	return res
 }
 ```
-
+:::
 
 
 ### [8.字符串转换整数 (atoi)](https://leetcode.cn/problems/string-to-integer-atoi)
@@ -44,6 +80,36 @@ func multiply(num1 string, num2 string) string {
 > 将前面步骤读入的这些数字转换为整数（即，"123" -> 123， "0032" -> 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。
 > 如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。
 > 返回整数作为最终结果。
+::: code-tabs
+
+@tab java
+```java
+class Solution {
+    public int myAtoi(String str) {
+        str = str.trim();
+        int n = str.length();
+        if(n == 0) return 0;
+        if(!Character.isDigit(str.charAt(0)) && str.charAt(0) != '+' && str.charAt(0) != '-'){
+            return 0;
+        }
+        long ans = 0l;
+        boolean neg = str.charAt(0) == '-'? true : false;
+        int begin = !Character.isDigit(str.charAt(0)) ? 1 : 0;
+        while(begin < n && Character.isDigit(str.charAt(begin))){
+            ans = ans * 10 + str.charAt(begin) - '0';
+            if(!neg && ans > Integer.MAX_VALUE){
+                return Integer.MAX_VALUE;
+            }
+            if(neg && ans > 1l + Integer.MAX_VALUE){
+                return Integer.MIN_VALUE;
+            }
+            begin++;
+        }
+        return neg?(int)-ans : (int)ans;
+    }
+}
+```
+@tab golang
 
 ```go
 func myAtoi(s string) int {
@@ -90,6 +156,8 @@ func myAtoi(s string) int {
 return num    
 }
 ```
+:::
+
 
 
 
@@ -125,7 +193,26 @@ return num
     }
 ```
 
-@tab go
+@tab java
+```java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> dic = new HashMap<>();
+        int l = 0, r = 0;
+        int maxLen = 0;
+        while(r < s.length()) {
+            l = Math.max(l, dic.getOrDefault(s.charAt(r), 0));
+            maxLen = Math.max(maxLen, r - l + 1);
+            dic.put(s.charAt(r), r + 1);
+            r++;
+        }
+        return maxLen;
+    }
+}
+```
+
+
+@tab golang
 
 ```go
 func lengthOfLongestSubstring(s string) int {
@@ -196,6 +283,34 @@ func max(a,b int)int{
     }
 ```
 
+@tab java
+```java
+class Solution {
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        String res = "";
+        for(int i=0;i<n;i++) {
+            String s1 = palindrome(s, i, i);
+            String s2 = palindrome(s, i, i+1);
+            res = s1.length() > res.length() ? s1 : res;
+            res = s2.length() > res.length() ? s2 : res;
+        }
+        return res;
+    }
+
+    private String palindrome(String s, int l, int r) {
+        String res = "";
+        while(l>=0 && r<s.length() && s.charAt(l) == s.charAt(r)) {
+            res = s.substring(l, r+1);
+            l--;
+            r++;
+        }
+        return res;
+    }
+}
+```
+
+
 @tab golang
 
 ```go
@@ -229,6 +344,33 @@ func isPalding(s string,left,right int)string{
 
 > 给定两个字符串形式的非负整数 `num1` 和`num2` ，计算它们的和并同样以字符串形式返回。
 >
+::: code-tabs
+
+@tab java
+```java
+class Solution {
+    public String addStrings(String num1, String num2) {
+        int n1 = num1.length()-1;
+        int n2 = num2.length()-1;
+        int carry = 0;
+        StringBuilder res = new StringBuilder();
+        while(n1 >= 0 || n2 >= 0){
+            int digit1 = n1>=0? num1.charAt(n1) - '0' : 0;
+            int digit2 = n2>=0? num2.charAt(n2) - '0' : 0;
+            int temp = digit1 + digit2 + carry;
+            res.append(temp % 10);
+            carry = temp>=10? 1:0;
+            n1--;
+            n2--;
+        }
+        if(carry == 1){
+            res.append(1);
+        }
+        return res.reverse().toString();
+    }
+}
+```
+@tab golang
 
 ```go
 func addStrings(num1 string, num2 string) string {
@@ -255,13 +397,56 @@ func addStrings(num1 string, num2 string) string {
 	return res
 }
 ```
-
+:::
 
 
 ### [76.最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
 
 > 给你一个字符串 `s` 、一个字符串 `t` 。返回 `s` 中涵盖 `t` 所有字符的最小子串。如果 `s` 中不存在涵盖 `t` 所有字符的子串，则返回空字符串 `""` 。
 >
+::: code-tabs
+
+@tab java
+```java
+class Solution {
+    public String minWindow(String s, String t) {
+        int left = 0;
+        int right = 0;
+        Map<Character, Integer> window = new HashMap<>();
+        Map<Character, Integer> need = new HashMap<>();
+        int valid = 0;
+        int m = s.length();
+        int n = t.length();
+        int minLen = m+1;
+        String res = "";
+        for(int i=0;i<n;i++) {
+            need.put(t.charAt(i), need.getOrDefault(t.charAt(i), 0) + 1);
+        }
+        while(right < m) {
+            if(need.containsKey(s.charAt(right))) {
+                char c = s.charAt(right);
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                if((int)window.get(c) == (int)need.get(c)) valid++;
+            }
+            while(valid == need.size()) {
+                if(right - left + 1 < minLen) {
+                    minLen = right - left + 1;
+                    res = s.substring(left, right+1);
+                }
+                if(need.containsKey(s.charAt(left))) {
+                    char del = s.charAt(left);
+                    if((int)window.get(del) == (int)need.get(del)) valid--;
+                    window.put(del, window.get(del) - 1);
+                }
+                left++;
+            }
+            right++;
+        }
+        return res;
+    }
+}
+```
+@tab golang
 
 ```go
 func minWindow(s string, t string) string {
@@ -312,7 +497,7 @@ func minWindow(s string, t string) string {
 	return s[start : lenr+start]
 }
 ```
-
+:::
 
 
 ### [165.比较版本号](https://leetcode.cn/problems/compare-version-numbers)
@@ -328,6 +513,27 @@ func minWindow(s string, t string) string {
 > 如果 version1 > version2 返回 1，
 > 如果 version1 < version2 返回 -1，
 > 除此之外返回 0。
+::: code-tabs
+
+@tab java
+```java
+class Solution {
+    public int compareVersion(String v1, String v2) {
+        String[] ss1 = v1.split("\\."), ss2 = v2.split("\\.");
+        int n = ss1.length, m = ss2.length;
+        int i = 0, j = 0;
+        while (i < n || j < m) {
+            int a = 0, b = 0;
+            if (i < n) a = Integer.parseInt(ss1[i++]);
+            if (j < m) b = Integer.parseInt(ss2[j++]);
+            if (a != b) return a > b ? 1 : -1;
+        }
+        return 0;
+    }
+}
+
+```
+@tab golang
 
 ```go
 import "strings"
@@ -355,7 +561,7 @@ func compareVersion(version1 string, version2 string) int {
     return 0 
 }
 ```
-
+:::
 
 
 ### [151.反转字符串中的单词](https://leetcode.cn/problems/reverse-words-in-a-string/)
@@ -368,6 +574,27 @@ func compareVersion(version1 string, version2 string) int {
 >
 > 注意：输入字符串 s中可能会存在前导空格、尾随空格或者单词间的多个空格。返回的结果字符串中，单词间应当仅用单个空格分隔，且不包含任何额外的空格。
 >
+::: code-tabs
+
+@tab java
+```java
+class Solution {
+    public String reverseWords(String s) {
+        StringBuffer sb = new StringBuffer();
+        int r = s.length() - 1;
+        while(r >= 0) {
+            while(r >= 0 && s.charAt(r) == ' ') r--;
+            if(r < 0) break;
+            int l = r;
+            while(l >= 0 && s.charAt(l) != ' ') l--;
+            sb.append(s.substring(l+1, r+1) + " ");
+            r = l;
+        }
+        return sb.substring(0, sb.length() - 1);
+    }
+}
+```
+@tab golang
 
 ```go
 func reverseWords(s string) string {
@@ -383,14 +610,37 @@ func reverseWords(s string) string {
 }
 ```
 
-
+:::
 
 ### [14.最长公共前缀](https://leetcode.cn/problems/longest-common-prefix/)
 
 > 编写一个函数来查找字符串数组中的最长公共前缀。
 >
 > 如果不存在公共前缀，返回空字符串 `""`。
+::: code-tabs
 
+@tab java
+```java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if(strs.length == 0) 
+            return "";
+        String ans = strs[0];
+        for(int i =1;i<strs.length;i++) {
+            int j=0;
+            for(;j<ans.length() && j < strs[i].length();j++) {
+                if(ans.charAt(j) != strs[i].charAt(j))
+                    break;
+            }
+            ans = ans.substring(0, j);
+            if(ans.equals(""))
+                return ans;
+        }
+        return ans;
+    }
+}
+```
+@tab golang
 ```go
 type DictTreeNode struct {
 	depth int
@@ -443,48 +693,8 @@ func min(a, b int) int {
 	return a
 }
 ```
+:::
 
-
-
-### [394.字符串解码](https://leetcode.cn/problems/decode-string)
-
-> 给定一个经过编码的字符串，返回它解码后的字符串。
->
-> 编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。
->
-> 你可以认为输入字符串总是有效的；输入字符串中没有额外的空格，且输入的方括号总是符合格式要求的。
->
-> 此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
->
-
-```go
-func decodeString(s string) string {
-	numStack := []int{}
-	strStack := []string{}
-	num := 0
-	result := ""
-	for _, char := range s {
-		if char >= '0' && char <= '9' {
-			n, _ := strconv.Atoi(string(char))
-			num = num*10 + n
-		} else if char == '[' {
-			strStack = append(strStack, result)
-			result = ""
-			numStack = append(numStack, num)
-			num = 0
-		} else if char == ']' {
-			count := numStack[len(numStack)-1]
-			numStack = numStack[:len(numStack)-1]
-			str := strStack[len(strStack)-1]
-			strStack = strStack[:len(strStack)-1]
-			result = string(str) + strings.Repeat(result, count)
-		} else {
-			result += string(char)
-		}
-	}
-	return result
-}
-```
 
 
 
@@ -494,7 +704,40 @@ func decodeString(s string) string {
 >
 > 例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
 > 给定一个只包含数字的字符串 s ，用以表示一个 IP 地址，返回所有可能的有效 IP 地址，这些地址可以通过在 s 中插入 '.' 来形成。你 不能 重新排序或删除 s 中的任何数字。你可以按 任何 顺序返回答案。
+::: code-tabs
 
+@tab java
+```java
+class Solution {
+    private List<String> res;
+    public List<String> restoreIpAddresses(String s) {
+        res = new ArrayList<>();
+        if(s.length() > 12) return res;
+        dfs(s, 0, new LinkedList<String>());
+        return res;
+    }
+
+    private void dfs(String s, int i, LinkedList<String> path) {
+        if(path.size() == 4) {
+            if(i == s.length()) {
+                StringBuffer sb = new StringBuffer();
+                for(String r : path) sb.append(r + ".");
+                res.add(sb.substring(0, sb.length() - 1));
+            }
+            return;
+        }
+        for(int j=i;j<i+3 && j<s.length();j++) {
+            if(s.charAt(i) == '0' && j > i) continue;
+            int opt = Integer.parseInt(s.substring(i, j + 1));
+            if(opt > 255) continue;
+            path.add(s.substring(i, j + 1));
+            dfs(s, j+1, path);
+            path.remove(path.size() - 1);
+        }
+    }
+}
+```
+@tab golang
 ```go
 func restoreIpAddresses(s string) []string {
 	res := []string{}
@@ -528,7 +771,7 @@ func restoreIpAddresses(s string) []string {
 	return res
 }
 ```
-
+:::
 
 
 ### [468.验证IP地址](https://leetcode.cn/problems/validate-ip-address/)
@@ -541,7 +784,66 @@ func restoreIpAddresses(s string) []string {
 > xi 是一个 十六进制字符串 ，可以包含数字、小写英文字母( 'a' 到 'f' )和大写英文字母( 'A' 到 'F' )。
 > 在 xi 中允许前导零。
 > 例如 "2001:0db8:85a3:0000:0000:8a2e:0370:7334" 和 "2001:db8:85a3:0:0:8A2E:0370:7334" 是有效的 IPv6 地址，而 "2001:0db8:85a3::8A2E:037j:7334" 和 "02001:0db8:85a3:0000:0000:8a2e:0370:7334" 是无效的 IPv6 地址。
+::: code-tabs
 
+@tab java
+```java
+class Solution {
+    public String validIPAddress(String queryIP) {
+        if (queryIP.contains(".")) {
+            String[] arr = queryIP.split("\\.", -1);
+            if (!isIPv4(arr)) {
+                return "Neither";
+            }
+            return "IPv4";
+        }
+        String[] arr = queryIP.split("\\:", -1);
+        if (!isIPv6(arr)) {
+            return "Neither";
+        }
+        return "IPv6";
+    }
+
+    private boolean isIPv4(String[] arr) {
+        if (arr.length != 4) {
+            return false;
+        }
+        for (String ip : arr) {
+            if (ip.length() < 1 || ip.length() > 3) {
+                return false;
+            }
+            for (char ch : ip.toCharArray()) {
+                if (!Character.isDigit(ch)) {
+                    return false;
+                }
+            }
+            int ipNum = Integer.parseInt(ip);
+            if (ipNum > 255 || (String.valueOf(ipNum).length() != ip.length())) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean isIPv6(String[] arr) {
+        if (arr.length != 8) {
+            return false;
+        }
+        for (String ip : arr) {
+            if (ip.length() < 1 || ip.length() > 4) {
+                return false;
+            }
+            for (char ch : ip.toCharArray()) {
+                if (!Character.isDigit(ch) && !(ch >= 'a' && ch <= 'f' || ch >= 'A' && ch <= 'F')) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+```
+@tab golang
 ```go
 func validIPAddress(queryIP string) string {
     isIPv4 := func(arr []string) bool {
@@ -590,4 +892,4 @@ func validIPAddress(queryIP string) string {
     return "IPv6"
 }
 ```
-
+:::

@@ -17,9 +17,9 @@ editLink: false
 :::
 
 
+
 ## 面试
 
-- [简历准备](../start-learning/resume.md)
 
 - [面试学习路线](../start-learning/routine.md)
 

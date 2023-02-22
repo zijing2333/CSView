@@ -3,7 +3,18 @@ pageInfo: false
 editLink: false
 title: 开发日志
 comment: false
+sidebar: heading
 ---
+
+
+## 2023年2月22日
+
+- github上传源代码，开源项目
+- golang更新面试题
+- 主页布局重新更新，导航栏和侧边栏重新定义
+- 域名审核通过，使用新域名 csview.cn
+- 解决vue编译过程中内存溢出问题
+- 算法更新Java题解35道
 
 ## 2023年2月21日
 

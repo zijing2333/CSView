@@ -48,7 +48,39 @@ public:
     }
 };
 ```
+@tab java
 
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while(l <= r) {
+            int mid = l + (r - l) / 2;
+            if(nums[mid] > nums[r]) {
+                if(target >= nums[l] && target <= nums[mid]) return binarySearch(nums, l, mid, target);
+                else l = mid + 1;
+            } else if (nums[mid] < nums[r]) {
+                if(target >= nums[mid] && target <= nums[r]) return binarySearch(nums, mid, r, target);
+                else r = mid - 1;
+            } else {
+                if(nums[mid] == target) return mid;
+                return -1;
+            }
+        }
+        return -1;
+    }
+
+    private int binarySearch(int[] nums, int l, int r, int target) {
+        while(l <= r) {
+            int mid = l + (r - l) / 2;
+            if(nums[mid] > target) r = mid - 1;
+            else if(nums[mid] < target) l = mid + 1;
+            else return mid;
+        }
+        return -1;
+    }
+}
+```
 @tab golang
 
 ```go
@@ -143,7 +175,35 @@ func search(nums []int, target int) int {
         return;
     }
 ```
+@tab java
 
+```java
+class Solution {
+    public void nextPermutation(int[] nums) {
+        int n = nums.length;
+        for(int i=n-1;i>=1;i--) {
+            if(nums[i] > nums[i-1]) {
+                int j = i;
+                int min = nums[j];
+                int minIdx = j;
+                while(j < n) {
+                    if(nums[j] > nums[i-1] && nums[j] < min) {
+                        min = nums[j];
+                        minIdx = j;
+                    }
+                    j++;
+                }
+                int tmp = nums[i-1];
+                nums[i-1] = nums[minIdx];
+                nums[minIdx] = tmp;
+                Arrays.sort(nums, i, n);
+                return;
+            }
+        }
+        Arrays.sort(nums);
+    }
+}
+```
 @tab golang
 
 ```go
@@ -162,6 +222,7 @@ func nextPermutation(nums []int) {
 	sort.Ints(nums)
 }
 ```
+:::
 
 ------
 
@@ -200,7 +261,25 @@ func nextPermutation(nums []int) {
         }
     }
 ```
+@tab java
 
+```java
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = m - 1;
+        int j = n - 1;
+        for(int k=m+n-1;k>=0;k--) {
+            if(i >= 0 && j >= 0) {
+                nums1[k] = nums1[i] >= nums2[j]? nums1[i--] : nums2[j--];
+            } else if(i >= 0) {
+                nums1[k] = nums1[i--];
+            } else {
+                nums1[k] = nums2[j--];
+            }
+        }
+    }
+}
+```
 @tab golang
 
 ```go
@@ -219,7 +298,7 @@ func merge(nums1 []int, m int, nums2 []int, n int)  {
     }
 }
 ```
-
+:::
 ------
 
 
@@ -255,6 +334,34 @@ func merge(nums1 []int, m int, nums2 []int, n int)  {
         return ans;
     }
 ```
+@tab java
+
+```java
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> {
+            if(a[0] != b[0]) return a[0] - b[0];
+            else return a[1] - b[1];
+        });
+        int left = intervals[0][0];
+        int right = intervals[0][1];
+        List<int[]> tmpRes = new ArrayList<>();
+        for(int i=1;i<intervals.length;i++) {
+            int[] cur = intervals[i];
+            if(cur[1] <= right) continue;
+            else if(cur[0] <= right) right = cur[1];
+            else {
+                tmpRes.add(new int[]{left, right});
+                left = cur[0];
+                right = cur[1];
+            }
+        }
+        tmpRes.add(new int[]{left, right});
+        int[][] res = new int[tmpRes.size()][2];
+        return tmpRes.toArray(res);
+    }
+}
+```
 @tab golang
 
 ```go
@@ -277,7 +384,7 @@ func merge(intervals [][]int) [][]int {
     return append(res, []int{start, end})
 }
 ```
-
+:::
 
 
 ------
@@ -324,6 +431,26 @@ func merge(intervals [][]int) [][]int {
         return l;
     }
 ```
+@tab java
+
+```java
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length - 1;
+        for (; left < right; ) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[mid + 1]) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+}
+
+```
+@tab golang
 ```go
 func findPeakElement(nums []int) int {
     left, right := 0, len(nums)-1
@@ -352,7 +479,7 @@ func findPeakElement(nums []int) int {
     return -1
 }
 ```
-
+:::
 ------
 
 
@@ -415,6 +542,45 @@ func findPeakElement(nums []int) int {
 
     }
 ```
+@tab java
+
+```java
+class Solution {
+    public double findMedianSortedArrays(int[] A, int[] B) {
+        int m = A.length;
+        int n = B.length;
+        if (m > n) { 
+            return findMedianSortedArrays(B,A); // 保证 m <= n
+        }
+        int iMin = 0, iMax = m;
+        while (iMin <= iMax) {
+            int i = (iMin + iMax) / 2;
+            int j = (m + n + 1) / 2 - i;
+            if (j != 0 && i != m && B[j-1] > A[i]){ // i 需要增大
+                iMin = i + 1; 
+            }
+            else if (i != 0 && j != n && A[i-1] > B[j]) { // i 需要减小
+                iMax = i - 1; 
+            }
+            else { // 达到要求，并且将边界条件列出来单独考虑
+                int maxLeft = 0;
+                if (i == 0) { maxLeft = B[j-1]; }
+                else if (j == 0) { maxLeft = A[i-1]; }
+                else { maxLeft = Math.max(A[i-1], B[j-1]); }
+                if ( (m + n) % 2 == 1 ) { return maxLeft; } // 奇数的话不需要考虑右半部分
+
+                int minRight = 0;
+                if (i == m) { minRight = B[j]; }
+                else if (j == n) { minRight = A[i]; }
+                else { minRight = Math.min(B[j], A[i]); }
+
+                return (maxLeft + minRight) / 2.0; //如果是偶数的话返回结果
+            }
+        }
+        return 0.0;
+    }
+}
+```
 @tab golang
 
 ```go
@@ -439,6 +605,7 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
     return float64(left+right)/2.0
 }
 ```
+:::
 
 ------
 
@@ -528,7 +695,46 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
         return nums[left];
     }
 ```
+@tab java
 
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int n = nums.length;
+        for(int i=n/2-1;i>=0;i--) {
+            pushDown(nums, i, n-1);
+        }
+        int tail = n - 1;
+        for(int i=0;i<k-1;i++) {
+            swap(nums, 0, tail);
+            pushDown(nums, 0, --tail);
+        }
+        return nums[0];
+    }
+
+    private void pushDown(int[] nums, int i, int n) {
+        int l = i;
+        while(l < n) {
+            if(2*l+1 == n && (nums[l] < nums[n])) {
+                swap(nums, l, n);
+                l = n;
+            } else if((2*l+2 <= n) && (nums[l] < nums[2*l+1] && nums[2*l+1] > nums[2*l+2])) {
+                swap(nums, l, 2*l+1);
+                l = 2*l+1;
+            } else if((2*l+2 <= n) && (nums[l] < nums[2*l+2] && nums[2*l+2] >= nums[2*l+1])) {
+                swap(nums, l, 2*l+2);
+                l = 2*l+2;
+            } else l = n;
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+}
+```
 @tab golang
 
 ```go
@@ -617,6 +823,52 @@ func (hp *Heap)Down(i int) {
         return {static_cast<int>(x - nums.begin()), static_cast<int>(y - nums.begin() - 1)};
     }
 ```
+@tab java
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        buildMaxHeap(nums);
+        int n = nums.length - 1;
+        for(int i=0;i<k-1;i++) {
+            swap(nums, 0, n--);
+            maxHeapify(nums, 0, n);
+        }
+        return nums[0];
+    }
+
+    private void buildMaxHeap(int[] nums) {
+        int n = nums.length-1;
+        for(int i=(n-1)/2;i>=0;i--) { // 注意这里的初始值
+            maxHeapify(nums, i, n);
+        }
+    }
+
+    private void maxHeapify(int[] nums, int i, int last) {
+        int r = i;
+        while(r < last) {
+            if(2*r+1 == last && nums[r] < nums[last]) {
+                swap(nums, r, last);
+                r = last;
+            }else if(2*r+2 <= last && nums[r] < nums[2*r+1] && nums[2*r+1] >= nums[2*r+2]) {
+                swap(nums, r, 2*r+1);
+                r = 2*r+1;
+            }else if(2*r+2 <= last && nums[r] < nums[2*r+2] && nums[2*r+2] > nums[2*r+1]) {
+                swap(nums, r, 2*r+2);
+                r = 2*r+2;
+            }else {
+                r = last;
+            }
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
 @tab golang
 
 ```go
@@ -642,7 +894,7 @@ func searchRange(nums []int, target int) []int {
     return []int{l, l + cnt}
 }
 ```
-
+:::
 ------
 
 
@@ -674,7 +926,23 @@ func searchRange(nums []int, target int) []int {
         return;
     }
 ```
-@tab go
+@tab java
+
+```java
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int i = -1;
+        for(int j=0;j<nums.length;j++) {
+            if(nums[j] != 0) nums[++i] = nums[j];
+        }
+        i++;
+        while(i < nums.length) {
+            nums[i++] = 0;
+        }
+    }
+}
+```
+@tab golang
 
 ```go
 func moveZeroes(nums []int)  {
@@ -690,7 +958,7 @@ func moveZeroes(nums []int)  {
     }
 }
 ```
-
+:::
 ------
 
 
@@ -729,6 +997,26 @@ func moveZeroes(nums []int)  {
         return nums[l];
     }
 ```
+@tab java
+
+```java
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[right]) {          
+                left = mid + 1;
+            } else {                                
+                right = mid;
+            }
+        }
+        return nums[left];
+    }
+};
+
+```
 @tab golang
 
 ```go
@@ -750,6 +1038,7 @@ func findMin(nums []int) int {
     return nums[l]
 }
 ```
+:::
 
 ------
 
@@ -777,6 +1066,23 @@ func findMin(nums []int) int {
         return res;
     }
 ```
+@tab java
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        Map<Integer, Integer> dic = new HashMap<>();
+        for(int i=0;i<nums.length;i++){
+            if(dic.get(nums[i]) != null) dic.put(nums[i], 0);
+            else dic.put(nums[i], 1);
+        }
+        for(int k:dic.keySet()){
+            if(dic.get(k) != 0) return k;
+        }
+        return -1;
+    }
+}
+```
 @tab golang
 
 ```go
@@ -788,7 +1094,7 @@ func singleNumber(nums []int) int {
     return ans
 }
 ```
-
+:::
 ------
 
 ### [55.跳跃游戏](https://leetcode.cn/problems/jump-game/)
@@ -817,7 +1123,23 @@ func singleNumber(nums []int) int {
         return true;
     }
 ```
-@tab go
+@tab java
+
+```java
+class Solution {
+    public boolean canJump(int[] nums) {
+        int farest = 0;
+        for(int i=0;i<nums.length;i++) {
+            farest = Math.max(farest, nums[i] + i);
+            if(farest >= nums.length-1) return true;
+            if(farest == i) return false;
+        }
+        return false;
+    }
+}
+
+```
+@tab golang
 
 ```go
 func canJump(nums []int) bool {
@@ -838,4 +1160,4 @@ func maxInt(a, b int) int {
     return b
 }
 ```
-
+:::

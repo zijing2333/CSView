@@ -31,12 +31,12 @@ $border-color: (
   transition: color var(--color-transition), color var(--color-transition), transform var(--transform-transition);
 }
 
-.hero-info-wrapper img {
-  display: block;
-  max-width: 100%;
-  max-height: 23rem;
-  margin: 0;
-}
+// .hero-info-wrapper img {
+//   display: block;
+//   max-width: 100%;
+//   max-height: 23rem;
+//   margin: 0;
+// }
 
 .hero-info-wrapper .description {
   max-width: 35rem;
