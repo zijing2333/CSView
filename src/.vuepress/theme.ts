@@ -16,7 +16,7 @@ export default hopeTheme({
   logoDark:"/logodark.png",
 
   // 项目仓库
-  repo: "https://github.com/zijing2333/CSGuide",
+  repo: "https://github.com/zijing2333/CSView",
 
   // 项目仓库标签
   repoLabel: "GitHub仓库",
