@@ -1,0 +1,1 @@
+import{_ as e,X as t,Y as s,Z as _}from"./framework-edbf9e3c.js";const c={},o=_("p",null,"努力赶稿中……",-1),n=[o];function r(a,l){return t(),s("div",null,n)}const u=e(c,[["render",r],["__file","resume.html.vue"]]);export{u as default};
