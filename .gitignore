@@ -2,9 +2,11 @@
 node_modules/
 src/.vuepress/.cache/
 src/.vuepress/.temp/
+
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
 deploy.sh
-.gitignore
-.github/
+.github
+src/.env
+src/config.json
