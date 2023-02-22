@@ -2,9 +2,4 @@
 node_modules/
 src/.vuepress/.cache/
 src/.vuepress/.temp/
-src/.vuepress/navbar/
-src/.vuepress/sidebar/
-src/.vuepress/styles/
-src/.vuepress/config.ts
-src/.vuepress/theme.ts
 
