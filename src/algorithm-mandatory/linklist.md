@@ -1825,8 +1825,70 @@ func hasCycle(head *ListNode) bool {
 
 > 给你一个单链表的头节点 `head` ，请你判断该链表是否为回文链表。如果是，返回 `true` ；否则，返回 `false` 。
 
+**解题思路**：
+- 想做到时间复杂度O(n),空间复杂度O(1)，那么就是先快慢指针找到中点，然后反转后半部分链表，然后比较一遍。
+- 如果链表个数是奇数的话，存在后边部分比前半部分多1的可能性，所以前后链表只要有一个遍历完了就退出比较。
+- 链表操作是很容易发生bug的地方，建议多创指针，然后每一步写的详细些，该断开的地方断开，这样不容易出错。
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverse(ListNode* begin) {
+        ListNode* pre = nullptr, *next = nullptr;
+        ListNode* cur = begin;
+        while(cur != nullptr) {
+            next = cur->next;
+            cur->next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+    bool isPalindrome(ListNode* head) {
+        if(head->next == nullptr) {
+            return true;
+        }
+        ListNode* slow = head, *fast = head;
+        ListNode* slowPre = nullptr;
+        while(fast != nullptr && fast->next != nullptr) {
+            fast = fast->next;
+            if(fast->next != nullptr) {
+                fast = fast->next;
+            }
+            slowPre = slow;
+            slow = slow->next;
+        }
+        ListNode* end1 = slowPre;
+        ListNode* begin1 = head;
+        ListNode* begin2 = slow;
+        slowPre->next = nullptr;
+        ListNode* p1 = begin1;
+        ListNode* p2 = reverse(begin2);
+        while(p1 != nullptr && p2 != nullptr) {
+            if(p1->val != p2->val) {
+                return false;
+            }
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        reverse(p2);
+        end1->next = begin2;
+        return true;
+    }
+};
 
+```
 @tab java
 ```java
 /**
@@ -1908,8 +1970,49 @@ func isPalindrome(head *ListNode) bool {
 
 > 给你一个链表的头节点 `head` ，旋转链表，将链表每个节点向右移动 `k` 个位置。
 
+**解题思路**：
+- 其实有个很简单的做法，你先遍历到链表结尾，记录链表长度len，再首尾相连成环形链表
+- 然后再遍历len - k个到新链表的结尾，然后记录新链表的开头并断开
+- 返回结果
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(!head || k == 0) return head;
+        ListNode* end = head;
+        int count = 0;
+        while(end->next){
+            end = end->next;
+            count++;
+        }
+        end->next = head;
+
+        int rotateTime = k % (count + 1);
+        end = head;
+        for(int i = 0;i < count - rotateTime; i++){
+            end = end->next;
+        }
+        head = end->next;
+        end->next = nullptr;
+        return head;
+    }
+};
+```
 @tab java
+
 ```java
 
 /**
