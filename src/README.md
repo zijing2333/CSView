@@ -54,8 +54,7 @@ footer: 备案号：<a href="https://beian.miit.gov.cn/" target="_blank">吉ICP�
 ---
 
 
-<img src="https://pic.imgdb.cn/item/63f7590ff144a01007a3baff.jpg" width="200px" height="30px" />
-
+![](https://pic.imgdb.cn/item/63f7590ff144a01007a3baff.jpg  =630x350)
 
 
 

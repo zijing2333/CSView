@@ -85,9 +85,15 @@ AQS的实现主要有两种方式：独占式（Exclusive）和共享式（Share
 以上是AQS的基本实现方式，它是Java中构建锁和同步器的核心框架，为各种同步工具的实现提供了强大的基础支持。
 ### 并发容器
 
-Java中为保证并发下的线程安全，设计了一些并发容器，常见的有CopyOnWriteList和ConcurrentHashMap
+Java中为保证并发下的线程安全，设计了一些并发容器，常见的有CopyOnWriteArrayList和ConcurrentHashMap
+#### CopyOnWriteArrayList
+CopyOnWriteArrayList的实现原理主要分为两个方面，一是利用可重入锁实现线程安全，二是通过复制数组实现读写分离。
 
-#### CopyOnWriteList
+在CopyOnWriteArrayList中，每次写操作都会先获取可重入锁，然后将当前数组复制一份，进行修改后再将新的数组赋值给原来的引用。在修改完成后释放锁。由于读操作不会对原数组进行修改，所以读操作可以直接对原来的数组进行读取，无需加锁。这样就实现了读写分离的效果，可以在不影响正在进行的读操作的情况下进行写操作。
+
+在CopyOnWriteArrayList的实现中，由于每次写操作都需要复制整个数组，所以写操作的性能比较低。但是在读多写少的场景中，CopyOnWriteArrayList的并发性能比较好，因为读操作不会加锁，可以同时进行。
+
+需要注意的是，虽然CopyOnWriteArrayList是线程安全的，但是它并不能保证数据的实时一致性。由于写操作的结果只会对新的数组产生影响，所以在多线程环境中，读取到的数据可能不是最新的。因此，CopyOnWriteArrayList适用于读多写少且对实时性要求不高的场景。
 
 #### ConcurrentHashMap
 
