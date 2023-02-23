@@ -21,7 +21,7 @@ features:
     details: 介绍网站的一些基本功能，阅读指南有助于提高学习效率
     link: /guide
 
-  - title: 加入群聊&公众号
+  - title: 公众号&学习群
     icon: shuyi_qunliao
     details: 加入微信交流群跟各位互联网上岸同学交流，互相学习，一起进步。公众号会定期分享高质量面经解析
     link: /group
@@ -29,7 +29,7 @@ features:
 
   - title: 面经分享
     icon: 24gl-mailboxFull
-    details: 分享面经，帮助更多的人找工作
+    details: 将面试之后的内容提交到本站，帮助更多的人找工作
     link: /interview
 
   - title: 简历项目

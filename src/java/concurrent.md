@@ -97,10 +97,30 @@ CopyOnWriteArrayList的实现原理主要分为两个方面，一是利用可重
 
 #### ConcurrentHashMap
 
+ConcurrentHashMap是Java中的一个线程安全的哈希表实现，它可以在多线程环境下并发地进行读写操作，而不需要像传统的HashTable那样在读写时加锁。
+
+ConcurrentHashMap的实现原理主要基于分段锁和CAS操作。它将整个哈希表分成了多个Segment（段），每个Segment都类似于一个小的HashMap，它拥有自己的数组和一个独立的锁。在ConcurrentHashMap中，读操作不需要锁，可以直接对Segment进行读取，而写操作则只需要锁定对应的Segment，而不是整个哈希表，这样可以大大提高并发性能。
+
+在ConcurrentHashMap的实现中，写操作需要进行CAS操作，以保证线程安全。在写操作时，如果当前Segment已经被其他线程锁定了，那么当前线程就会尝试在其他的Segment中进行写操作，直到找到一个可用的Segment。如果在所有的Segment中都找不到可用的，那么当前线程就会进行自旋等待，直到其他线程释放锁。
+
+ConcurrentHashMap的另一个特点是它的迭代器是弱一致的，也就是说，在遍历时可以看到不一致的数据。这是因为在多线程环境下，ConcurrentHashMap中的数据是动态的，而迭代器的创建时间和遍历时间可能存在一定的时间差，这样就可能会出现一些数据的更新在迭代器创建后进行，但在遍历时还没有反映出来的情况。虽然这样会影响到数据的可见性，但是可以提高并发性能，因为不需要在迭代器上加锁。
+
+需要注意的是，虽然ConcurrentHashMap是线程安全的，但是它并不能保证数据的实时一致性。在多线程环境下，由于线程的执行顺序和时间差异，可能会出现数据的不一致性。因此，ConcurrentHashMap适用于读多写少的场景，对于对数据实时一致性要求较高的场景，可能需要采用其他的数据结构或者加锁来保证数据的一致性。
 
 ### 阻塞队列
 
+BlockingQueue是Java中一个线程安全的队列接口，它扩展了Queue接口，提供了阻塞操作，可以在队列为空或者队列已满时自动阻塞等待。BlockingQueue在多线程编程中广泛应用，特别是在生产者消费者模式中。
 
+BlockingQueue提供了一系列阻塞方法，包括：
+
+- put(E e): 向队列尾部添加元素，如果队列已满，会一直阻塞直到有空闲的空间。
+- offer(E e, long timeout, TimeUnit unit): 向队列尾部添加元素，在指定的时间内等待空闲的空间，如果队列还是满的，返回false。
+- take(): 获取并删除队列头部的元素，如果队列为空，会一直阻塞直到有元素可用。
+- poll(long timeout, TimeUnit unit): 获取并删除队列头部的元素，在指定的时间内等待元素，如果还是空的，返回null。
+
+BlockingQueue实现了多线程间的同步，它可以保证线程之间的有序性，而不需要显式地加锁。BlockingQueue还提供了可扩展和不可扩展的两种实现方式。在可扩展的实现中，如果队列满了，可以自动扩展队列大小；在不可扩展的实现中，队列的大小是固定的，如果队列已满，新的元素无法添加。
+
+Java中提供了多种BlockingQueue的实现类，如ArrayBlockingQueue、LinkedBlockingQueue、PriorityBlockingQueue等。其中，ArrayBlockingQueue和LinkedBlockingQueue是最常用的实现类。它们的实现方式不同，ArrayBlockingQueue是基于数组实现的，而LinkedBlockingQueue是基于链表实现的，因此它们在性能和可扩展性方面有所差异，应该根据实际需求来选择。
 
 ### ThreadLocal
 
