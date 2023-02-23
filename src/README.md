@@ -48,10 +48,6 @@ features:
     link: /reward
 
 
-  - title: 备用板块
-    icon: hongbao1
-    details: 我不知道有什么用，但是我就想放七个
-    link: /reward
 
 footer: 备案号：<a href="https://beian.miit.gov.cn/" target="_blank">吉ICP备2023000735号-2</a>
 
