@@ -8,17 +8,17 @@ heroText: CSView
 tagline: 专注互联网招聘知识分享，让计算机招聘不再困难~
 
 actions:
-  - text: 开始学习
+  - text: 开始学习 🧭
     link: /start-learning
     type: primary
 
-  - text: 题频排序
+  - text: 题频排序 💡
     link: /rank
 
 features:
   - title: 使用指南
     icon: zhinanzhidao-xianxing
-    details: 阅读指南有助于提高学习效率
+    details: 介绍网站的一些基本功能，阅读指南有助于提高学习效率
     link: /guide
 
   - title: 加入群聊&公众号
@@ -53,6 +53,8 @@ footer: 备案号：<a href="https://beian.miit.gov.cn/" target="_blank">吉ICP�
 
 ---
 
+
+![](https://pic.imgdb.cn/item/63f7590ff144a01007a3baff.jpg)
 
 
 
