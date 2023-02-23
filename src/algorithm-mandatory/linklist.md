@@ -1738,7 +1738,39 @@ func swapPairs(head *ListNode) *ListNode {
 > 如果链表中存在环 ，则返回 true 。 否则，返回 false 。
 >
 
+**解题思路**：
+- **双指针**的思路，快慢指针找环。
+- 快指针一次走两步，慢指针一次走一步，如果碰上了说明有环，如果直接碰到nullptr退出，说明无环。
+
 ::: code-tabs
+#tab cpp
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head == nullptr) {
+            return false;
+        }
+        ListNode* fast = head -> next, *slow = head;
+        while(fast != slow) {
+            if(fast == nullptr || fast->next == nullptr) {
+                return false;
+            }
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        return true;
+    }
+};
+```
 @tab java
 ```java
 /**
