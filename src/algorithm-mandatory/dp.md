@@ -478,6 +478,7 @@ func min(a,b int)int{
 >
 > 例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。
 > 两个字符串的 公共子序列 是这两个字符串所共同拥有的子序列。
+
 **解题思路**：
 - 属于dp中的模板题目，dp[i][j]表示text1中第i位和text2中第j位结尾的最长公共子序列。
 - 如果text1[i] == text2[j]，那么dp[i][j] = dp[i - 1][j - 1] + 1
@@ -649,6 +650,7 @@ func min(a,b int)int{
 > - 插入一个字符
 > - 删除一个字符
 > - 替换一个字符
+
 **解题思路**：
 - 最长公共子序列题目的变种
 - dp[i][j] 表示word1 中前i个字符变成 word2 中前j个字符的代价。
@@ -758,6 +760,7 @@ func min(a, b int) int {
 >
 > 每次你可以爬 `1` 或 `2` 个台阶。你有多少种不同的方法可以爬到楼顶呢？
 >
+
 **解题思路**：
 - 先考虑一维dp，dp[i]表示调到第i阶需要多少步,dp[i] = dp[i - 1] + dp[i - 2]
 - 会发现dp[i]只需要dp[i - 1],dp[i - 2]，直接优化了，其实就是斐波那契数列问题。
@@ -824,6 +827,7 @@ func climbStairs(n int) int {
 >
 > 返回 你能获得的 最大 利润 。
 >
+
 **解题思路**：
 - dp[i][0]代表第i天手里没股票最大收益，dp[i][1]代表第i天手里有股票
 - dp[i][0]要么是i - 1天也没股票，要么是i - 1天把股票卖了。
@@ -890,6 +894,7 @@ func max(a,b int)int{
 >
 > 给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
 >
+
 **解题思路**：
 - dp[i]表示 第i家偷了拿到的最多钱。
 - 要么前一家偷了，dp[i - 1]，要么前一家没偷dp[i - 2] + nums[i], 取最大值
@@ -973,6 +978,7 @@ func max(a, b int) int {
 >
 > 注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
 >
+
 **解题思路**：
 - dp[i]表示以i结尾的子串能否被wordDict拼出来。
 - 所以可以遍历之前每一位，如果j到i之间的子串在wordDict中，且dp[j] = 1那么dp[i] = 1
@@ -1086,6 +1092,7 @@ func wordBreak(s string,wordDict []string) bool  {
 > 给定一个包含非负整数的 `m x n` 网格 `grid` ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
 >
 > **说明：**每次只能向下或者向右移动一步。
+
 **解题思路**：
 - dp[i][j]表示从(0,0)到i，j所需要的最短路径。
 - 比较容易看出来，dp[i][j]由dp[i - 1][j]与dp[i][j - 1]更新得到，因为只能往下走往游走。
@@ -1206,7 +1213,30 @@ func Min(a, b int) int {
 ### [718.最长重复子数组](https://leetcode.cn/problems/maximum-length-of-repeated-subarray/)
 
 > 给两个整数数组 `nums1` 和 `nums2` ，返回两个数组中 **公共的** 、长度最长的子数组的长度。
+
+**解题思路**：
+- 跟最长公共子序列一个思路，只不过注意如果nums1[i] != nums2[j]，那么直接dp[i][j] = 0
+- 因为子数组必须连续，而子序列可以不连续
 ::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    int findLength(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size(), m = nums2.size();
+        vector<vector<int>> dp(n + 1,vector<int>(m + 1));
+        int maxNum = 0;
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= m; j++){
+                if(nums1[i-1] == nums2[j-1]) dp[i][j] = dp[i-1][j-1] + 1;
+                maxNum = max(maxNum, dp[i][j]);
+            }
+        }
+        return maxNum;
+    }
+};
+```
 @tab java
 ```java
 class Solution {
@@ -1255,7 +1285,38 @@ func findLength(A []int, B []int) int {
 >
 > 请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
 >
+
+**解题思路**：
+- dp问题，dp[i]表示从i开始往上的最长连续序列长度，然后答案就是最大的dp，因为最长的连续序列的初始一定在dp里。
+- 比较容易想的是先给每个元素i的dp[i]赋1，然后遍历每个元素,对每个元素尝试将其dp往上阔， dp[i] += dp[i - 1]
+- 但这样有个问题就是如果i是一段最长连续序列非开头的数，如果开头数先遍历，此时会重复加。
+- 所以当前一个数不存在时，才开始尝试往上找。
 ::: code-tabs
+@tab cpp
+```cpp
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        unordered_map<int, int> dp;
+        int ans = 1;
+        for(int num: nums){
+            dp[num] = 1;
+        }
+        for(auto& num: dp){
+            int numTemp = num.first;
+            if(!dp.count(numTemp - 1)){
+                while(dp.count(numTemp + 1)) {
+                    dp[numTemp + 1] += dp[numTemp];
+                    ans = max(ans, dp[numTemp + 1]);
+                    numTemp = numTemp + 1;
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 class Solution {
@@ -1315,7 +1376,36 @@ func longestConsecutive(nums []int) int {
 >
 > 问总共有多少条不同的路径？
 >
+
+**解题思路**：
+- dp问题，dp[i][j]表示从(0, 0)到第(i, j)位所花费的路径数。
+- 因为只能往下走和往右走，所以dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
+- 注意一下边界条件
 ::: code-tabs
+@tab cpp
+```cpp
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        vector<vector<int>> dp(m, vector<int>(n));
+        dp[0][0] = 1;
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(i == 0 && j == 0) {
+                    continue;
+                }
+                if(i != 0) {
+                    dp[i][j] += dp[i - 1][j];
+                }
+                if(j != 0) {
+                    dp[i][j] += dp[i][j - 1];
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+};
+```
 @tab java
 ```java
 class Solution {

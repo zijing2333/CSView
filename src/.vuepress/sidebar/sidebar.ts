@@ -3,6 +3,7 @@ import { sidebar } from "vuepress-theme-hope";
 export const sideBar = sidebar({
 
    "/network/":[
+    
       { text: "🟠 概述", link: "summary"},
       { text: "🔴 TCP和UDP", link: "tcp"},
       { text: "🔵 IP", link: "ip"},
@@ -74,10 +75,12 @@ export const sideBar = sidebar({
     ],
     
 
+      
     "/": [
         {
             text: "刷题",
             icon: "suanfaku",
+            collapsible: true,
             children: [
               {
                 text: "面试必刷算法题",
@@ -109,6 +112,8 @@ export const sideBar = sidebar({
         {
             text: "数据库",
             icon: "data-Inquire-full",
+            collapsible: true,
+
             children: [
               {
                 text: "MySQL",
@@ -126,6 +131,8 @@ export const sideBar = sidebar({
           {
             text: "编程语言基础",
             icon: "biancheng-01",
+            collapsible: true,
+
             children: [
               {
                 text: "golang",
@@ -148,6 +155,7 @@ export const sideBar = sidebar({
           {
             text: "中间件",
             icon: "gongju",
+            collapsible: true,
             children: [
               {
                 text: "RabbitMQ",
