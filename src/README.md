@@ -21,9 +21,9 @@ features:
     details: 阅读指南有助于提高学习效率
     link: /guide
 
-  - title: 加入群聊
+  - title: 加入群聊&公众号
     icon: shuyi_qunliao
-    details: 加入微信交流群跟各位互联网上岸同学交流，互相学习，一起进步
+    details: 加入微信交流群跟各位互联网上岸同学交流，互相学习，一起进步。公众号会定期分享高质量面经解析
     link: /group
 
 
@@ -42,9 +42,9 @@ features:
     details: 分享一些互联网招聘信息
     link: /deliver
 
-  - title: 打赏本站
+  - title: 打赏作者
     icon: hongbao1
-    details: 可以请作者喝一杯奶茶，或者一顿疯狂星期四
+    details: 可以请作者喝一杯奶茶，或者去Github点一个免费的star
     link: /reward
 
 

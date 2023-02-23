@@ -5,9 +5,6 @@ editLink: false
 comment: false
 ---
 
-::: tip 提示
-点击题目名称可以直接跳转到力扣答题界面。
-:::
 
 # [链表](./linklist.md)
 

@@ -6,16 +6,6 @@ editLink: false
 ---
 
 
-::: tip 友情提示
-本站多数题目用已用<Badge text="掌握" type="tip" /><Badge text="了解" type="info" /><Badge text="重要" type="danger" />标注出现频率：
-
-- 对于<Badge text="重要" type="danger" />题目，面试必问，如果简历上写了相关内容一定要会
-
-- 对于<Badge text="掌握" type="tip" />题目，面试中出现几率较高，应当作为掌握内容
-
-- 对于<Badge text="了解" type="info" />题目，面试偶尔会出现，可作为补充学习或深入探究掌握
-:::
-
 
 
 ## 面试
