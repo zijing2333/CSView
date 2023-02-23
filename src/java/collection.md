@@ -155,3 +155,20 @@ author: xmy
 - LinkedHashSet是HashSet子类，在HashSet的基础上能过够按照添加的顺序遍历
 
 - TreeSet底层使用红黑树，插入时按照默认/自定义的key排序规则指定插入位置
+
+### 总结
+- Collection下主要有List，Set，Map三个接口
+
+- List和Set是继承了Collection接口
+
+- Map只是依赖了Collection接口，不存在父子关系
+
+- List主要有ArrayList，LinkedList，Vector
+
+- Set主要有HashSet，TreeSet，LinkedHashSet
+
+- Map主要有HashMap，HashTable，TreeMap，ConcurrentHashMap
+
+- 当我们要存键值对，以便通过键值访问数据时，就用Map，此时需要排序就用TreeMap，不需要就用HashMap，需要线程安全就用ConcurrentHashMap
+
+- 当我们只需要存对象时，就用Collection，需要保证唯一性就用Set，不需要就用List。用Set时，需要保证顺序就用TreeSet，不需要就用HashSet。用List时，如果是频繁查询，较少增删的场景，就用ArrayList，如果是频繁增删，较少查询的场景就用LinkedList，如果要保证线程安全就用Vector
