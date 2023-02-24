@@ -4,7 +4,7 @@ author: xmy
 ---
 
 ### 内存区域
-![image-20210909114511412](https://i.loli.net/2021/09/12/txQ3RMvaociB5XZ.png)
+![image-20210909114511412](https://pic.imgdb.cn/item/63f8b8bdf144a010079d4c87.jpg)
 
 HotSpot在JDK1.8之前方法区就是永久代，永久代就是方法区。
 
@@ -69,7 +69,7 @@ JDK1.7开始默认开启了逃逸分析，如果一个对象只在一个线程�
 JVM可通过native方法对其进行直接操作，而无需在使用时将其拷贝到JVM内存区。
 
 ### 对象创建过程
-![Java创建对象的过程](https://i.loli.net/2021/09/12/y5mBCNQVfuAYWRh.png)
+![Java创建对象的过程](https://pic.imgdb.cn/item/63f8b9aef144a010079ea749.jpg)
 
 1. **类加载检查：**
 

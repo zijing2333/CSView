@@ -8,7 +8,7 @@ author: xmy
 ### Java线程模型
 在Java中，启动一个main函数就代表启动了一个JVM进程，main函数所在的线程是这个进程的主线程，该JVM进程中的所有线程共享该JVM的堆和方法区，同时JVM在每个线程创建时为其分配各自的PC、虚拟机栈和本地方法栈，每个线程有一个Thread对象维护其上下文。
 
-![image-20210903102622040](https://i.loli.net/2021/09/12/S6QpFl8Yev21UEX.png)
+![image-20210903102622040](https://pic.imgdb.cn/item/63f8b734f144a010079b07cb.jpg)
 Java中线程有六个状态
 
 | 状态          | 含义                                                         |
