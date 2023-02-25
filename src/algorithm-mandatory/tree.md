@@ -1,7 +1,50 @@
 ### [144.二叉树的前序遍历](https://leetcode.cn/problems/binary-tree-preorder-traversal/)
 
 > 给你二叉树的根节点 `root` ，返回它节点值的 **前序** 遍历。
+
+**解题思路**：
+- 递归版本的思路就不说了，比较基础。
+- 非递归的思路首先准备一个栈，先把头放入栈中，然后每次在栈中弹出cur，并处理cur，直到栈空了返回。
+- 处理cur时，先打印当前节点val，如果有其他操作也都在这里做，把cur的右子树根节点压入，再把左子树根节点压入，如果是nullptr就不管了。
+- 基于栈做法的时间复杂度O(N),空间复杂度O(N)，如果想把空间复杂度优化到O(1)，可以参考Morris遍历，但这种遍历不支持多线程。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<TreeNode*> st;
+        if(root != nullptr) {
+            st.emplace_back(root);
+        }
+        vector<int> ans;
+        while(!st.empty()) {
+            TreeNode* cur = st.back();
+            ans.emplace_back(cur->val);
+            st.pop_back();
+            if(cur->right != nullptr) {
+                st.emplace_back(cur->right);
+            }
+            if(cur->left != nullptr) {
+                st.emplace_back(cur->left);
+            }
+        }
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -100,7 +143,47 @@ func preorderTraversal(root *TreeNode) []int {
 
 > 给定一个二叉树的根节点 `root` ，返回它的 **中序** 遍历 。
 >
+
+**解题思路**：
+- 中序遍历需要准备一个栈，一个指针，直到栈空且指针为nullptr才停止。
+- 每次处理都处理指针，先把指针的左边界全部进栈，就是让左子树节点进栈，然后指向下一个左子树，直到碰到nullptr。
+- 让栈弹出一个元素，让指针指向它，此时打印或者其他操作。
+- 然后让指针指向右子树根节点，循环往复。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<TreeNode*> st;
+        vector<int> ans;
+        TreeNode* cur = root;
+        while(!st.empty() || cur != nullptr) {
+            while(cur != nullptr) {
+                st.emplace_back(cur);
+                cur = cur->left;
+            }
+            cur = st.back();
+            st.pop_back();
+            ans.emplace_back(cur->val);
+            cur = cur->right;
+        }
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -181,7 +264,45 @@ func inorderTraversal(root *TreeNode) []int {
 ### [226.翻转二叉树](https://leetcode.cn/problems/invert-binary-tree/)
 
 > 给你一棵二叉树的根节点 `root` ，翻转这棵二叉树，并返回其根节点。
+
+**解题思路**：
+- 翻转二叉树就是递归的思路，先反转自己，再反转左子树，右子树。
+- 二叉树的常见处理方式有两种：
+- - 一种是先处理自己，再处理左子树右子树，基于先序遍历的方式
+- - 另一种一般是处理自己时候需要左右子树信息，所以就是先处理左右子树，问他们要信息，然后再处理自己，这种套路也叫树形dp，基于后序遍历的方式。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    void turnTree(TreeNode* root){
+        if(root->left==nullptr && root->right==nullptr) return;//如果遇到叶子，直接返回
+        TreeNode* left=root->left;//交换left与right
+        root->left=root->right;
+        root->right=left;
+        if(root->left!=nullptr) turnTree(root->left);//递归访问左右节点
+        if(root->right!=nullptr) turnTree(root->right);
+    }
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        if(root==nullptr) return root;
+        turnTree(root);
+        return root;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -233,7 +354,45 @@ func invertTree(root *TreeNode) *TreeNode {
 ### [101.对称二叉树](https://leetcode.cn/problems/symmetric-tree/)
 
 > 给你一个二叉树的根节点`root`， 检查它是否轴对称。
+
+**解题思路**：
+- 递归时候传入当前节点的左右子树，递归返回当前左右子树是否轴对称。
+- 然后dfs就检查传入的两个子树是否轴对称，如果不对称就返回，如果对称就接着检查下一层，检查左子树的左节点和右子树的右节点，以及左子树的右节点与右子树的左节点
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool dfs(TreeNode* left, TreeNode* right) {
+        if(left == nullptr && right == nullptr) {
+            return true;
+        }else if(left == nullptr && right != nullptr) {
+            return false;
+        }else if(left != nullptr && right == nullptr) {
+            return false;
+        }else {
+            if(left->val != right->val) {
+                return false;
+            }
+            return dfs(left->left, right->right) && dfs(left->right, right->left);
+        }
+    }
+    bool isSymmetric(TreeNode* root) {
+        return dfs(root->left, root->right);
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -302,7 +461,49 @@ func isInvertTree(root *TreeNode, seroot *TreeNode) bool {
 > 本题中，一棵高度平衡二叉树定义为：
 >
 > 一个二叉树*每个节点* 的左右两个子树的高度差的绝对值不超过 1 。
+
+**解题思路**：
+- 树形dp类问题，
+- dfs问左右子树要他们的高度。
+- 然后判断一下高度差绝对值是否超过1，超过1标记false
+- 返回左右子树高度最大值加1
+- 题目dfs完返回标记值。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = 1;
+    int dfs(TreeNode* root) {
+        if(root == nullptr || !ans) {
+            return 0;
+        }
+        int leftHigh = dfs(root->left);
+        int rightHigh = dfs(root->right);
+        if(abs(leftHigh - rightHigh) > 1) {
+            ans = 0;
+        }
+        return max(leftHigh, rightHigh) + 1;
+
+    }
+    bool isBalanced(TreeNode* root) {
+        dfs(root);
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -370,7 +571,50 @@ func abs(x int) int {
 ### [104.二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
 
 > 给定一个二叉树，找出其最大深度。二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+- 这题怎么遍历都可以，只要记录一下遍历到的最深层数即可。
+- 作者比较喜欢层序遍历，直接返回遍历了多少层就行。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        deque<TreeNode*> q = {root};
+        TreeNode* cur = root;
+        int depth = 0;
+        while(!q.empty()) {
+            int sz = q.size();
+            for(int i = 0; i < sz; i++) {
+                cur = q.front();
+                q.pop_front();
+                if(cur->left != nullptr) {
+                    q.emplace_back(cur->left);
+                }
+                if(cur->right != nullptr) {
+                    q.emplace_back(cur->right);
+                }
+            }
+            depth++;
+        }
+        return depth;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -691,7 +935,54 @@ func find(root *TreeNode,val1,val2 int)*TreeNode{
 > 给定一个二叉树的 **根节点** root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
 >
 
+**解题思路**：
+- **层序遍历**的变化题目，每次遍历只要记录每一层的最右节点即可。
+- 注意边界条件。
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        deque<TreeNode*> q = {root};
+        TreeNode* cur = root;
+        vector<int> ans;
+        if(root == nullptr) {
+            return ans;
+        }
+        while(!q.empty()) {
+            int sz = q.size();
+            int tmp = 101;
+            for(int i = 0; i < sz; i++) {
+                cur = q.front();
+                q.pop_front();
+                tmp = cur->val;
+                if(cur->left != nullptr) {
+                    q.emplace_back(cur->left);
+                }
+                if(cur->right != nullptr) {
+                    q.emplace_back(cur->right);
+                }
+            }
+            if(tmp != 101) {
+                ans.emplace_back(tmp);
+            }
+        }
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 /**

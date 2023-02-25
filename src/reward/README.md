@@ -4,8 +4,7 @@ editLink: false
 comment: false
 sidebar: false
 ---
-![](https://pic.imgdb.cn/item/63f890dbf144a01007616609.jpg)
-
+![](https://pic.imgdb.cn/item/63f9f431f144a010076ecb6b.jpg)
 ::: center
 ### 🧋打赏6元，作者可以喝一杯蜜雪冰城
 

@@ -5,7 +5,7 @@ title: CSView
 heroImage: /logo.png
 heroImageDark: /logodark.png
 heroText: CSView
-tagline: 专注互联网招聘知识分享，让计算机招聘不再困难~
+tagline: 专注互联网面试内容汇总，让计算机招聘不再困难~
 
 actions:
   - text: 开始学习 🧭
@@ -42,7 +42,7 @@ features:
     details: 分享一些互联网招聘信息
     link: /deliver
 
-  - title: 打赏作者
+  - title: 支持网站
     icon: hongbao1
     details: 可以请作者喝一杯奶茶，或者去Github点一个免费的star
     link: /reward
