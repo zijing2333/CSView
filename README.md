@@ -113,8 +113,9 @@
 
 **zijing2333**：某985大学软件工程专业读研二，**仙子伊布**爱好者，喜欢读哲学、历史和健康管理学。
 
-## 技术支持
+<p id="技术支持"></p>
 
+<h1 align="center">技术支持</h1>
 **开发测试**：[腾讯云服务器](https://github.com/zijing2333/CSView)
 
 **项目框架**：[vuepress2.0](https://v2.vuepress.vuejs.org/)
