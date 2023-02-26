@@ -1,3 +1,4 @@
+# **[在线阅读](https://www.csview.cn/)**
 
 # 项目介绍
 
@@ -42,6 +43,31 @@
 
 **共商共建**：您可以[开发日志](https://www.csguide.xyz/development-log/)看到网站更新工作和进展，我们会不断优化网站的每一处内容，网站内容也会根据面经和实际需求**每天更新**，及时修复存在的错误。任何人都可以参与到项目的建设中来，任何人都可以贡献内容到网站，贡献内容的人将会出现在网站的作者栏。
 
+# 学习
+
+## 刷题
+### [面试必刷算法题](./src/algorithm-mandatory)
+### [系统设计题](./src/design)
+### [智力题](./src/intelligence)
+### [HR面常见题](./src/hr)
+
+## 编程语言基础
+### [cpp](./src/cpp/)
+### [golang](./src/golang/)
+### [java](./src/java/)
+
+## 计算机基础
+### [计算机网络](./src/network/)
+### [操作系统](./src/os/)
+
+## 数据库
+### [MySQL](./src/mysql/)
+### [Redis](./src/redis/)
+
+## 中间件
+### [RabbitMQ](./src/rabbitmq/)
+### [K8s](./src/k8s/)
+### [Nginx](./src/nginx/)
 
 
 ## 作者
