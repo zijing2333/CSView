@@ -48,9 +48,17 @@
 
 
 ### Linux如何查看实时的滚动日志？<Badge text="了解" type="info" />
+- 使用tail命令查看日志文件。使用 -f 选项可以跟踪文件末尾的内容，这表示它会持续显示被新添加到文件中的内容。
 
-更新中......
+`tail -f location_of_log_file`
 
+- 使用multitail同时监视多个日志文件
+
+`multitail log_file_1 log_file_2`
+
+- 使用less命令实时查看日志文件
+
+`less +F log_file`
 
 
 
@@ -75,19 +83,19 @@
 
 - **sendfile**：
   在 Linux 内核版本 2.1 中，提供了一个专门发送文件的系统调用函数 sendfile()。它可以替代前面的 read() 和 write() 这两个系统调用，减少一次系统调用。包含1次系统调用，3次数据拷贝(2次DMA和1次CPU拷贝)
-  1. 用户进程发起sendfile系统调用，上下文(切换1)从用户态转向内核态
+  1. 用户进程发起sendfile系统调用，上下文(切换1)从用户态转向内核态。
   2. DMA控制器，把数据从硬盘中拷贝到内核缓冲区。
-  3. CPU将读缓冲区中数据拷贝到socket缓冲区
-  4. DMA控制器，异步把数据从socket缓冲区拷贝到网卡，
+  3. CPU将读缓冲区中数据拷贝到socket缓冲区。
+  4. DMA控制器，异步把数据从socket缓冲区拷贝到网卡。
   5. 上下文(切换2)从内核态切换回用户态，sendfile调用返回。
      ![](https://ask.qcloudimg.com/http-save/yehe-7197959/314a45c2ce4f001c136a6f0941cafc39.png?imageView2/2/w/1620)
 
 - **sendfile+DMA scatter/gather**：
   linux 2.4版本之后，对sendfile做了优化升级，引入SG-DMA技术，其实就是对DMA拷贝加入了scatter/gather操作，它可以直接从内核空间缓冲区中将数据读取到网卡。使用这个特点搞零拷贝，即还可以多省去一次CPU拷贝。包含1次系统调用，2次数据拷贝(2次DMA拷贝)。
-  1. 用户进程发起sendfile系统调用，上下文(切换1)从用户态转向内核态
+  1. 用户进程发起sendfile系统调用，上下文(切换1)从用户态转向内核态。
   2. DMA控制器，把数据从硬盘中拷贝到内核缓冲区。
-  3. CPU把内核缓冲区中的文件描述符信息(包括内核缓冲区的内存地址和偏移量)发送到socket缓冲区
-  4. DMA控制器根据文件描述符信息，直接把数据从内核缓冲区拷贝到网卡
+  3. CPU把内核缓冲区中的文件描述符信息(包括内核缓冲区的内存地址和偏移量)发送到socket缓冲区。
+  4. DMA控制器根据文件描述符信息，直接把数据从内核缓冲区拷贝到网卡。
   5. 上下文(切换2)从内核态切换回用户态，sendfile调用返回。
      ![](https://ask.qcloudimg.com/http-save/yehe-7197959/979075ba489c160e61dcb19426149620.png?imageView2/2/w/1620)
 
@@ -140,7 +148,7 @@ Linux有五种IO模型，**阻塞式IO、非阻塞式IO、IO复用、信号驱�
 用户进程尝试读取数据，可是数据尚未达到(未准备好)此时内核也是处于等待状态，而用户进程就是阻塞状态。等到数据已经到达并来到了内核缓冲区，代表已经就绪；但是数据还只是在内核空间中，并没有被拷贝到用户空间中，所以这时候用户进程还是不能处理数据，继续阻塞。直到数据拷贝到用户空间中，用户进程才解除阻塞。
 ![](https://pic3.zhimg.com/80/v2-ca5e9b983f97bcfaa06f1bcaed3abbf2_1440w.webp)
 
-**非阻塞式IO模型**：
+**非阻塞式IO模型**
 
 在非阻塞IO中，recvfrom操作会立即返回结果而不是阻塞用户进程。
 
@@ -151,25 +159,36 @@ Linux有五种IO模型，**阻塞式IO、非阻塞式IO、IO复用、信号驱�
 
 上述模型在单线程下只能依次处理单个IO事件，IO多路复用利用单个线程来同时监听多个FD，并在某个FD可读、可写时得到通知，从而避免无效的等待，充分利用CPU资源。监听方式有select、poll、epoll。
 
-用户进程调用select，指定要监听的FD集合，然后内核监听FD对应的多个socket，任意一个或多个socket数据就绪则返回readable，此过程中用户进程阻塞。当有socket就绪后，用户进程找到就绪的socket依次调用recvfrom读取数据，内核将数据拷贝到用户空间后用户进程处理数据。
+用户进程调用select，指定要监听的FD集合，然后内核监听FD对应的多个socket，任意一个或多个socket数据就绪则返回readable，此过程中用户进程阻塞。
+
+当有socket就绪后，用户进程找到就绪的socket依次调用recvfrom读取数据，内核将数据拷贝到用户空间后用户进程处理数据。
+
 ![](https://pic1.zhimg.com/80/v2-d4f222f3493d732ce5b4bafa72c6b210_1440w.webp)
 
 **信号驱动IO**
 
 信号驱动IO是与内核建立SIGIO的信号关联并设置回调，当内核有FD就绪时，会发出SIGIO信号通知用户，期间用户应用可以执行其它业务，无需阻塞等待。
 
-用户进程调用sigaction，注册信号处理函数，随后内核返回成功，开始监听FD。用户进程不阻塞等待，可以执行其它业务，当内核数据就绪后，回调用户进程的SIGIO处理函数。然后用户进程收到SIGIO回调信号调用recvfrom，读取数据，内核将数据拷贝到用户空间后用户进程处理数据。
+用户进程调用sigaction，注册信号处理函数，随后内核返回成功，开始监听FD。用户进程不阻塞等待，可以执行其它业务，当内核数据就绪后，回调用户进程的SIGIO处理函数。
+
+然后用户进程收到SIGIO回调信号调用recvfrom，读取数据，内核将数据拷贝到用户空间后用户进程处理数据。
+
 ![](https://pic2.zhimg.com/80/v2-c4f9aa68cbf6ddf37d49de61d4d5b989_1440w.webp)
 
 **异步IO**
 
 异步IO的整个过程都是非阻塞的，用户进程调用完异步API后就可以去做其它事情，内核等待数据就绪并拷贝到用户空间后才会递交信号，通知用户进程。
 
-用户进程调用aio_read，创建信号回调函数，内核等待数据就绪，然后用户进程无需阻塞，可以做任何事情。等内核数据就绪后，内核数据拷贝到用户缓冲区，拷贝完成，内核递交信号触发aio_read中的回调函数，用户进程处理数据。
+用户进程调用aio_read，创建信号回调函数，内核等待数据就绪，然后用户进程无需阻塞，可以做任何事情。
+
+等内核数据就绪后，内核数据拷贝到用户缓冲区，拷贝完成，内核递交信号触发aio_read中的回调函数，用户进程处理数据。
+
 ![](https://img-blog.csdnimg.cn/img_convert/b5fdbf8016c87b614bf123b157e3da81.png#pic_center)
 
 
 
 ### traceroute命令的原理？<Badge text="了解" type="info" />
 
-Traceroute程序的设计是利用ICMP及IP header的TTL(Time To Live)栏位(field)。首先，traceroute送出一个TTL是1的IP datagram(其实，每次送出的为3个40字节的包，包括源地址，目的地址和包发出的时间标签)到目的地，当路径上的第一个路由器(router)收到这个datagram时，它将TTL减1。此时，TTL变为0了，所以该路由器会将此datagram丢掉，并送回一个「ICMP time exceeded」消息(包括发IP包的源地址，IP包的所有内容及路由器的IP地址)，traceroute 收到这个消息后，便知道这个路由器存在于这个路径上，接着traceroute 再送出另一个TTL是2 的datagram，发现第2个路由器...，traceroute 每次将送出的datagram的TTL加1来发现另一个路由器，这个重复的动作一直持续到某个datagram抵达目的地。当datagram到达目的地后，该主机并不会送回ICMP time exceeded消息，因为它已是目的地了。Traceroute在送出UDP datagrams到目的地时，它所选择送达的port number 是一个一般应用程序都不会用的号码(30000 以上)，所以当此UDP datagram 到达目的地后该主机会送回一个「ICMP port unreachable」的消息，而当traceroute 收到这个消息时，便知道目的地已经到达了。
+Traceroute程序的设计是利用ICMP及IP header的TTL(Time To Live)栏位(field)。
+
+首先，traceroute送出一个TTL是1的IP datagram(其实，每次送出的为3个40字节的包，包括源地址，目的地址和包发出的时间标签)到目的地，当路径上的第一个路由器(router)收到这个datagram时，它将TTL减1。此时，TTL变为0了，所以该路由器会将此datagram丢掉，并送回一个「ICMP time exceeded」消息(包括发IP包的源地址，IP包的所有内容及路由器的IP地址)，traceroute 收到这个消息后，便知道这个路由器存在于这个路径上，接着traceroute 再送出另一个TTL是2 的datagram，发现第2个路由器...，traceroute 每次将送出的datagram的TTL加1来发现另一个路由器，这个重复的动作一直持续到某个datagram抵达目的地。当datagram到达目的地后，该主机并不会送回ICMP time exceeded消息，因为它已是目的地了。Traceroute在送出UDP datagrams到目的地时，它所选择送达的port number 是一个一般应用程序都不会用的号码(30000 以上)，所以当此UDP datagram 到达目的地后该主机会送回一个「ICMP port unreachable」的消息，而当traceroute 收到这个消息时，便知道目的地已经到达了。

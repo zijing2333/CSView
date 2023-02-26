@@ -1743,7 +1743,7 @@ func swapPairs(head *ListNode) *ListNode {
 - 快指针一次走两步，慢指针一次走一步，如果碰上了说明有环，如果直接碰到nullptr退出，说明无环。
 
 ::: code-tabs
-#tab cpp
+@tab cpp
 ```cpp
 /**
  * Definition for singly-linked list.

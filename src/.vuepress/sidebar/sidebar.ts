@@ -36,6 +36,14 @@ export const sideBar = sidebar({
       { text: "🟣 集群", link: "colony"},
     ],
 
+    "/cpp/":[
+      { text: "🔴 概述", link: "summary"},
+      { text: "🔵 数据结构和关键字", link: "data-structure"},
+      { text: "🟡 函数", link: "function"},
+      { text: "🟢 编译和内存管理", link: "compilation-memory"},
+
+    ],
+
     "/java/":[
       { text: "🔴 基础", link: "summary"},
       { text: "🔵 集合", link: "collection"},

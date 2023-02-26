@@ -12,7 +12,7 @@ comment: false
 
 ![](https://pic.imgdb.cn/item/63f9fc78f144a010077a27f6.jpg)
 
-📲回复[**学习资料**]，即可获得本站所有推荐学习资料PDF版本，供学习交流使用：
+📲回复[**面试学习资料**]，即可获得本站所有推荐学习资料PDF版本，供学习交流使用：
 
 
 ![](https://pic.imgdb.cn/item/63f9fc29f144a0100779c16c.jpg)

@@ -196,7 +196,7 @@ Redis是不支持事务的，所以可能出现扣减为负数的情况，这种
 
 **Leaf-snowflake**：
 
-Leaf-snowflake基本上就是沿用了snowflake的设计，ID组成结构：正数位(占1比特)+ 时间戳(占41比特)+ 机器ID(占5比特)+ 机房ID(占5比特)+ 自增值(占12比特)，总共64比特组成的一个int64类型。不同点主要是在workId的生成上，Leaf-snowflake依靠Zookeeper生成workId`。`Leaf中workId是基于ZooKeeper的顺序Id来生成的，每个应用在使用Leaf-snowflake时，启动时都会都在Zookeeper中生成一个顺序Id，相当于一台机器对应一个顺序节点。
+Leaf-snowflake基本上就是沿用了snowflake的设计，ID组成结构：正数位(占1比特)+ 时间戳(占41比特)+ 机器ID(占5比特)+ 机房ID(占5比特)+ 自增值(占12比特)，总共64比特组成的一个int64类型。不同点主要是在workId的生成上，Leaf-snowflake依靠Zookeeper生成workId。Leaf中workId是基于ZooKeeper的顺序Id来生成的，每个应用在使用Leaf-snowflake时，启动时都会都在Zookeeper中生成一个顺序Id，相当于一台机器对应一个顺序节点。
 
 启动服务的过程大致如下：启动Leaf-snowflake服务，连接Zookeeper，在leaf_forever父节点下检查自己是否已经注册过；如果有注册过直接取回自己的workerID(zk顺序节点生成的int类型ID号)，启动服务；如果没有注册过，就在该父节点下面创建一个持久顺序节点，创建成功后取回顺序号当做自己的workerID号，启动服务。Leaf-snowflake对Zookeeper是一种弱依赖关系，除了每次会去ZK拿数据以外，也会在本机文件系统上缓存一个workerID文件。一旦ZooKeeper出现问题，恰好机器出现故障需重启时，依然能够保证服务正常启动。
 
@@ -370,7 +370,7 @@ APP本地时间会不准，可以使用**HTTP Response头的Date属性**，每�
 - 全局会话存在，局部会话不一定存在；
 - 全局会话销毁，局部会话必须销毁。
 
-注销
+**注销**
 
 单点登录自然也要单点注销，在一个子系统中注销，所有子系统的会话都将被销毁，用下面的图来说明：
 
@@ -385,7 +385,7 @@ sso认证中心一直监听全局会话的状态，一旦全局会话销毁，�
 5. 各注册系统接收sso认证中心的注销请求，销毁局部会话；
 6. sso认证中心引导用户至登录页面。
 
-部署
+**部署**
 
 单点登录涉及sso认证中心与众子系统，子系统与sso认证中心需要通信以交换令牌、校验令牌及发起注销请求，因而子系统必须集成sso的客户端，sso认证中心则是sso服务端，整个单点登录过程实质是sso客户端与服务端通信的过程，用下图描述：
 
