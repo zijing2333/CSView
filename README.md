@@ -72,18 +72,29 @@
 ### [golang](./src/golang/)
 ### [java](./src/java/)
 
-## 计算机基础
+
+<p id="计算机基础"></p>
+
+<h2 align="center">计算机基础</h2>
+
 ### [计算机网络](./src/network/)
 ### [操作系统](./src/os/)
 
-## 数据库
+<p id="数据库"></p>
+
+<h2 align="center">数据库</h2>
+
 ### [MySQL](./src/mysql/)
 ### [Redis](./src/redis/)
 
-## 中间件
+<p id="中间件"></p>
+
+<h2 align="center">中间件</h2>
+
 ### [RabbitMQ](./src/rabbitmq/)
 ### [K8s](./src/k8s/)
 ### [Nginx](./src/nginx/)
+
 
 
 <p id="作者"></p>
