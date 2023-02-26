@@ -1,10 +1,12 @@
-<p id="在线阅读"></p>
-
-<h1 align="center">网址：www.csview.cn</h1>
-
 <p id="标题"></p>
 
 <h1 align="center">CSView | 计算机面试知识汇总</h1>
+
+<p id="在线阅读"></p>
+
+<h1 align="center">在线阅读网址：www.csview.cn</h1>
+
+
 
 
 <p id="项目来源"></p>
@@ -59,7 +61,7 @@
 <h1 align="center">📚️学习</h1>
 <p id="刷题"></p>
 
-<h2 align="center">刷题</h2>
+<h2 align="center">🟠刷题</h2>
 
 ### [面试必刷算法题](./src/algorithm-mandatory)
 ### [系统设计题](./src/design)
@@ -69,7 +71,7 @@
 
 <p id="编程语言基础"></p>
 
-<h2 align="center">编程语言基础</h2>
+<h2 align="center">🟢编程语言基础</h2>
 
 ### [cpp](./src/cpp/)
 ### [golang](./src/golang/)
@@ -78,21 +80,21 @@
 
 <p id="计算机基础"></p>
 
-<h2 align="center">计算机基础</h2>
+<h2 align="center">🔵计算机基础</h2>
 
 ### [计算机网络](./src/network/)
 ### [操作系统](./src/os/)
 
 <p id="数据库"></p>
 
-<h2 align="center">数据库</h2>
+<h2 align="center">🔴数据库</h2>
 
 ### [MySQL](./src/mysql/)
 ### [Redis](./src/redis/)
 
 <p id="中间件"></p>
+<h2 align="center">⚫中间件</h2>
 
-<h2 align="center">中间件</h2>
 
 ### [RabbitMQ](./src/rabbitmq/)
 ### [K8s](./src/k8s/)
@@ -119,6 +121,7 @@
 <p id="技术支持"></p>
 
 <h1 align="center">🛠技术支持</h1>
+
 **开发测试**：[腾讯云服务器](https://github.com/zijing2333/CSView)
 
 **项目框架**：[vuepress2.0](https://v2.vuepress.vuejs.org/)
