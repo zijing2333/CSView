@@ -3,7 +3,6 @@ title: C++
 pageInfo: false
 editLink: false
 comment: false
-sidebar: heading
 ---
 
 # [概述](./summary.md)
