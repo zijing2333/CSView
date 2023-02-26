@@ -54,7 +54,7 @@
 
 <p id="学习"></p>
 
-<h1 align="center">学习</h1>
+<h1 align="center">📚️学习</h1>
 <p id="刷题"></p>
 
 <h2 align="center">刷题</h2>
@@ -100,7 +100,7 @@
 
 <p id="作者"></p>
 
-<h1 align="center">作者</h1>
+<h1 align="center">✍作者</h1>
 
 **枫长**：算法页面贡献者，某C9高校硕士，曾在字节跳动和阿里云各实习两个月，力扣刷题800多道，经常参加算法周赛，算法解题经验丰富。
 
@@ -116,7 +116,7 @@
 
 <p id="技术支持"></p>
 
-<h1 align="center">技术支持</h1>
+<h1 align="center">🛠技术支持</h1>
 **开发测试**：[腾讯云服务器](https://github.com/zijing2333/CSView)
 
 **项目框架**：[vuepress2.0](https://v2.vuepress.vuejs.org/)
@@ -134,14 +134,14 @@
 
 <p id="声明"></p>
 
-<h1 align="center">声明</h1>
+<h1 align="center">⚠️声明</h1>
 
 网站为本人整合创作，禁止整合恶意搬运、分享，且严禁将网站内容整合搬运到任何公众号。未按要求注明来源的内容请联系我整改或者删除。
 
 
 <p id="特别鸣谢"></p>
 
-<h1 align="center">特别鸣谢</h1>
+<h1 align="center">🦀特别鸣谢</h1>
 
 **特别感谢**[xiaolingcoding](https://xiaolincoding.com/)对本站创作和内容的支持，本站复用xiaolingcoding内容是为了带来更高质量的内容，同时也推荐大家去[xiaolingcoding](https://xiaolincoding.com/)系统学习计算机基础知识，这是一个质量极高的学习网站。
 
@@ -150,7 +150,7 @@
 
 <p id="未来计划"></p>
 
-<h1 align="center">未来计划</h1>
+<h1 align="center">📅未来计划</h1>
 
 - [ ] 面试题频次排序功能实现
 - [ ] 面经提交功能实现
