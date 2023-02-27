@@ -95,7 +95,7 @@ comment: false
 
 ## 特别鸣谢
 
-**特别感谢**[xiaolingcoding](https://xiaolincoding.com/)对本站创作和内容的支持，本站复用xiaolingcoding内容是为了带来更高质量的内容，同时也推荐大家去[xiaolingcoding](https://xiaolincoding.com/)系统学习计算机基础知识，这是一个质量极高的学习网站。
+**特别感谢**[小林coding](https://xiaolincoding.com/)对本站创作和内容的支持，本站复用小林coding内容是为了带来更高质量的内容，同时也推荐大家去[小林coding](https://xiaolincoding.com/)系统学习计算机基础知识，这是一个质量极高的学习网站。
 
 **特别感谢**[Mr.Hope](https://mrhope.site/)(vue-theme-hope主题开发者)项目开发中提供的技术支持及问题解决方案。
 
