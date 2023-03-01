@@ -9,7 +9,7 @@
 
 <p id="CSView介绍"></p>
 
-<h2 align="center">💻CSView介绍</h2>
+<h2 align="center">👁‍🗨CSView介绍</h2>
 
 CSView是一个互联网面试知识学习和汇总项目，包括**面试高频算法、系统设计、计算机网络、操作系统、cpp语言基础、Java语言基础、golang语言基础、MySQL、Redis、K8s、消息队列**等常见面试题。
 
