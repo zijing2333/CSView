@@ -113,7 +113,7 @@ ssthresh 和 cwnd 的值会发生变化
 
 ### TCP的三次握手？<Badge text="重要" type="danger" />
 
-![](https://pic.imgdb.cn/item/63e199104757feff33703bd8.jpg)
+<img src="https://pic.imgdb.cn/item/63e199104757feff33703bd8.jpg" alt="图片" style="zoom:70%;" >
 
 **第一次握手**
 
