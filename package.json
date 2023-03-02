@@ -19,6 +19,7 @@
     "vuepress": "2.0.0-beta.60"
   },
   "dependencies": {
+    "vue-matomo": "^4.2.0",
     "vuepress-plugin-search-pro": "2.0.0-beta.179",
     "vuepress-theme-hope": "2.0.0-beta.179"
   }
