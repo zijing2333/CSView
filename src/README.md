@@ -5,7 +5,7 @@ title: CSView
 heroImage: /logo.png
 heroImageDark: /logodark.png
 heroText: CSView
-tagline: 专注互联网面试内容汇总，让计算机招聘不再困难~
+tagline: CSView是一个互联网面试知识学习和汇总的八股文网站，包括面试高频算法、系统设计、计算机网络、操作系统、C++、Java、golang、MySQL、Redis、K8s、消息队列等常见面试题。
 
 actions:
   - text: 开始学习 🧭

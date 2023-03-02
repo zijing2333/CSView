@@ -1,9 +1,6 @@
 import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
-import {VueMatomo} from 'vue-matomo'
-// import { docsearchPlugin } from "@vuepress/plugin-docsearch";
-
 
 export default defineUserConfig({
 
@@ -18,7 +15,7 @@ export default defineUserConfig({
   title: 'CSView',
 
   // 站点的描述
-  description : 'CSView是一个互联网面试知识学习和汇总项目，包括面试高频算法、系统设计、计算机网络、操作系统、C++、Java、golang、MySQL、Redis、K8s、消息队列等常见面试题。',
+  description : 'CSView是一个互联网面试知识学习和汇总的八股文网站，包括面试高频算法、系统设计、计算机网络、操作系统、C++、Java、golang、MySQL、Redis、K8s、消息队列等常见面试题。',
 
   
   head: [
@@ -67,14 +64,6 @@ export default defineUserConfig({
       },
 
     }),
-    
-
-    // 20230212 爬虫结果显示插件暂时无法正常工作
-    // docsearchPlugin({
-    //   indexName: 'csguide',
-    //   appId: "DEXZADAF4U",
-    //   apiKey: "7df1732b3996e98e4387f27cea067e01",
-    // }),
     
   ],
   shouldPrefetch: true,
