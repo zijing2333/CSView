@@ -1,7 +1,7 @@
 ---
 home: true
 icon: home
-title: CSView
+title: 首页
 heroImage: /logo.png
 heroImageDark: /logodark.png
 heroText: CSView
