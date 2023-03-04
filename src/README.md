@@ -15,6 +15,9 @@ actions:
   - text: 题频排序 💡
     link: /rank
 
+  - text: 精品文章 📄
+    link: /article
+
 features:
   - title: 使用指南
     icon: zhinanzhidao-xianxing
