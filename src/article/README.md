@@ -14,6 +14,6 @@ comment: false
 
 
 
-<h4 align="center"><font size = 5><b><a href="https://www.csview.cn/article/02">校招和实习，编程语言该怎么选？</a></b></font></h4>
+<h4 align="center"><font size = 5><b><a href="../article/02">校招和实习，编程语言该怎么选？</a></b></font></h4>
 
 
