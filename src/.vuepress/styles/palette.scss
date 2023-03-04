@@ -1,12 +1,12 @@
 // you can change colors here
 // $theme-color: #096dd9;
-// $text-color:( 
+// $text-color:(
 //     light:#212c37,
 //     dark:#c9cad8,
 // );
 
-$home-page-width:70em;
-$theme-color:#2980b9;
+$home-page-width: 70em;
+$theme-color: #2980b9;
 $sidebar-width: 17rem;
 $sidebar-mobile-width: 16rem;
 // $bg-color: (
@@ -19,17 +19,17 @@ $border-color: (
   dark: #444,
 );
 
-.hero-info-wrapper .action-button {
-  // display: inline-block;
-  // overflow: hidden;
-  margin: 0.6rem;
-  padding: 0.5em 1.7rem;
-  border-radius: 3rem;
-  background: #67a52e;
-  color: #fffdfd;
-  font-size: 1.3rem;
-  transition: color var(--color-transition), color var(--color-transition), transform var(--transform-transition);
-}
+// .hero-info-wrapper .action-button {
+//   // display: inline-block;
+//   // overflow: hidden;
+//   margin: 0.6rem;
+//   padding: 0.5em 1.7rem;
+//   border-radius: 3rem;
+//   background: #67a52e;
+//   color: #fffdfd;
+//   font-size: 1.3rem;
+//   transition: color var(--color-transition), color var(--color-transition), transform var(--transform-transition);
+// }
 
 // .hero-info-wrapper img {
 //   display: block;
@@ -46,14 +46,48 @@ $border-color: (
   line-height: 1.3;
 }
 
-
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.25;
   overflow-wrap: break-word;
 }
 
 .sidebar > .sidebar-links > li > .sidebar-link {
-  font-size: 1.0em;
+  font-size: 1em;
 }
 
+.hero-info-wrapper {
+  .hero-info {
+    .actions {
+      .action-button {
+        color: #2c3e50;
+        transition-property: background-color;
+        // transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        // transition-duration: 150ms;
+      }
+      .action-button:nth-child(1) {
+        background: #f9a8d4;
+      }
+      .action-button:nth-child(1):hover {
+        background: #fbcfe8;
+      }
+      .action-button:nth-child(2) {
+        background: #93c5fd;
+      }
+      .action-button:nth-child(2):hover {
+        background: #bfdbfe;
+      }
+      .action-button:nth-child(3) {
+        background: #7dd3fc;
+      }
+      .action-button:nth-child(3):hover {
+        background: #bae6fd;
+      }
+    }
+  }
+}
