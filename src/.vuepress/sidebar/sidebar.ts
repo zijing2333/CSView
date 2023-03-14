@@ -49,6 +49,7 @@ export const sideBar = sidebar({
       { text: "🔵 集合", link: "collection"},
       { text: "🟢 并发", link: "concurrent"},
       { text: "🟡 JVM", link: "jvm"},
+      { text: "🟣 Spring", link: "spring"},
     ],
 
     "/design/":[
