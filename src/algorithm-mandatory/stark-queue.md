@@ -1,3 +1,7 @@
+---
+title: 栈和队列
+author: 枫长
+---
 ### [20.有效的括号](https://leetcode.cn/problems/valid-parentheses)
 
 > 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。

@@ -1,6 +1,6 @@
 ---
 pageInfo: false
-title: 面试必刷题
+title: 面试必刷算法题
 editLink: false
 comment: false
 ---
