@@ -1,1 +1,0 @@
-import{_ as t,W as c,X as n,Y as e}from"./framework-17a5d3b6.js";const i={},a=e("figure",null,[e("img",{src:"https://pic.imgdb.cn/item/63f76e3bf144a01007ce499c.jpg",alt:"",tabindex:"0",loading:"lazy"}),e("figcaption")],-1),o=[a];function s(_,l){return c(),n("div",null,o)}const d=t(i,[["render",s],["__file","index.html.vue"]]);export{d as default};
