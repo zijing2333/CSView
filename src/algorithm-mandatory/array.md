@@ -1,3 +1,8 @@
+---
+title: 数组
+author: 枫长
+---
+
 ### [33.索旋转排序数组](https://leetcode.cn/problems/search-in-rotated-sorted-array)
 
 > 整数数组nums按升序排列，数组中的值互不相同。

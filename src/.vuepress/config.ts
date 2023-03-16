@@ -2,6 +2,7 @@ import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 import { searchProPlugin } from "vuepress-plugin-search-pro";
 
+
 export default defineUserConfig({
 
 
@@ -12,7 +13,7 @@ export default defineUserConfig({
   lang: "zh-CN",
 
   // 站点的标题
-  title: 'CSView',
+  title: 'CSView计算机招聘知识分享',
 
   // 站点的描述
   description : 'CSView是一个互联网面试知识学习和汇总的八股文网站，包括面试高频算法、系统设计、计算机网络、操作系统、C++、Java、golang、MySQL、Redis、K8s、消息队列等常见面试题。',
@@ -33,10 +34,22 @@ export default defineUserConfig({
         s.parentNode.insertBefore(hm, s);
       })();`,
     ],   
+    [
+      "script",
+      {},
+      `var _paq = window._paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//www.csguide.xyz/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+      })();`,
+    ],  
   ],
-
-
-  
 
   // 主题
   theme,
@@ -44,6 +57,7 @@ export default defineUserConfig({
   // 插件
   plugins: [
     
+    // 搜索插件
     searchProPlugin({
       // 索引全部内容
       indexContent: true,
@@ -64,7 +78,6 @@ export default defineUserConfig({
       },
 
     }),
-    
   ],
   shouldPrefetch: true,
 });
