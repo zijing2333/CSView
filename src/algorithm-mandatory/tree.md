@@ -1062,7 +1062,51 @@ func dfs(root *TreeNode , n int){
 
 > 路径被定义为一条从树中任意节点出发，沿父节点--子节点连接，达到任意节点的序列。同一个节点在一条路径序列中至多出现一次。该路径至少包含一个节点，且不一定经过根节点。
 >
+
+**解题思路**：
+- 树形dp问题，计算包含当前节点的最大路径，然后从所有节点中找到最大的那一个。
+- 当前节点的最大路径一定是左子树的深度 + 右子树的深度 + 1，问左右子树要信息即可。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int ans = INT_MIN;
+    int dfs(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        int left = dfs(root->left);
+        int right = dfs(root->right);
+        int res = max(max(left, right), 0) + root->val;
+        int res1 = root->val;
+        if(left > 0) {
+            res1 += left;
+        }
+        if(right > 0) {
+            res1 += right;
+        }
+        ans = max(ans, res1);
+        return res;
+    }
+    int maxPathSum(TreeNode* root) {
+        dfs(root);
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -1128,7 +1172,54 @@ func max(a, b int) int {
 
 > 给你二叉树的根节点 `root`，返回其节点值的**层序遍历** 。（即逐层地，从左到右访问所有节点）。
 >
+
+**解题思路**：
+- 板子题，建议背过。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        deque<TreeNode* > q = {root};
+        TreeNode* cur = root;
+        vector<int> tmp;
+        vector<vector<int>> ans;
+        if(root == nullptr) {
+            return ans;
+        }
+        while(!q.empty()) {
+            int sz = q.size();
+            tmp.clear();
+            for(int i = 0; i < sz; i++) {
+                cur = q.front();
+                q.pop_front();
+                tmp.emplace_back(cur->val);
+                if(cur->left != nullptr) {
+                    q.emplace_back(cur->left);
+                }
+                if(cur->right != nullptr) {
+                    q.emplace_back(cur->right);
+                }
+            }
+            ans.emplace_back(tmp);
+        }   
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -1219,7 +1310,50 @@ func dfs(root *TreeNode,level int){
 
 > 给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
 >
+
+**解题思路**：
+- 先序遍历用数组存的话，保存顺序是头 + 左子树 + 右子树；中序遍历保存顺序是：左子树 + 头 + 右子树
+- 所以可以在preoder的第一位找到头是哪个，然后再找到头在中序遍历哪一位以确定左子树长度与右子树长度
+- 然后分别递归去构造左右子树得到结果。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* dfs(vector<int>& preorder, int pl, int pr, vector<int>& inorder, int il, int ir) {
+        if(pl > pr || il > ir) {
+            return nullptr;
+        }
+        int idx = il;
+        for(idx; idx <= ir; idx++) {
+            if(inorder[idx] == preorder[pl]) {
+                break;
+            }
+        }
+        TreeNode* root = new TreeNode(preorder[pl]);
+        int lenl = idx - il;
+        root->left = dfs(preorder,pl + 1, pl + lenl, inorder, il, idx - 1);
+        root->right = dfs(preorder, pl + lenl + 1, pr, inorder, idx + 1, ir);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        return dfs(preorder, 0, preorder.size() - 1, inorder, 0, inorder.size() - 1);
+    }
+};
+```
+
 @tab java
 ```java
 /**
@@ -1309,7 +1443,54 @@ func build(preorder []int,preStart int,preEnd int,inorder []int,inStart int,inEn
 >- 节点的右子树只包含 大于 当前节点的数。
 > - 所有左子树和右子树自身必须也是二叉搜索树。
 
+**解题思路**：
+- 如果当前节点大于左子树最大节点，小于右子树最小节点，且左右子树都是BST，那么就是BST。
+- 因此就是树形dp问题，问左右子树看他们是不是BST，以及他们的最大节点与最小节点。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+struct info{
+    bool isBST;
+    long maxVal, minVal;
+    info(bool _isBST, long _maxVal, long _minVal) :isBST(_isBST), maxVal(_maxVal), minVal(_minVal) {}
+};
+class Solution {
+public:
+    info dfs(TreeNode* root) {
+        if(root == nullptr) {
+            return info(true, LONG_MIN, LONG_MAX);
+        }
+        info left = dfs(root->left);
+        info right = dfs(root->right);
+        if(!left.isBST || !right.isBST) {
+            return info(false, 0, 0);
+        }
+        if(left.maxVal >= root->val || right.minVal <= root->val) {
+            return info(false, 0, 0);
+        }
+        long minVal = root->left == nullptr ? root->val : left.minVal;
+        long maxVal = root->right == nullptr ? root->val : right.maxVal;
+        return info(true, maxVal, minVal);
+    }
+    bool isValidBST(TreeNode* root) {
+        info res = dfs(root);
+        return res.isBST;
+    }
+};
+```
+
 @tab java
 ```java
 /**
@@ -1375,7 +1556,44 @@ func traverse(root,min,max *TreeNode)bool{
 ### [543.二叉树的直径](https://leetcode.cn/problems/diameter-of-binary-tree/)
 
 > 给定一棵二叉树，你需要计算它的直径长度。一棵二叉树的直径长度是任意两个结点路径长度中的最大值。这条路径可能穿过也可能不穿过根结点。
+
+**解题思路**：
+- 对于每个节点来说，经过当前节点的直径长度，就是左右节点的深度减去两倍当前节点的深度，这就是当前节点的直径长度。
+- 用树形dp的方法获取到左右子树的深度，算出当前节点的直径长度，然后取所有节点中最大的直径长度。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+    int ans=0;
+    int scan(TreeNode* root,int depth){
+        if(root==nullptr) return depth-1;//返回-1是因为它的父节点才是叶子
+        int left=scan(root->left,depth+1);
+        int right=scan(root->right,depth+1);
+        ans=max(ans,left+right-2*depth);
+        return max(left,right);
+    }
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        ans=0;
+        int n=scan(root,0);
+        return ans;
+    }
+};
+```
+
 @tab java
 ```java
 /**
@@ -1453,7 +1671,53 @@ func max(a,b int)int{
 >
 
 
+**解题思路**：
+- 对于二叉树可以给每个节点编号，根节点就是1，左子节点就是2 * idx - 1，右子节点就是2 * idx。
+- 然后层序遍历搞清楚每一层的最左边和最右边编号，就可以得到宽度。
+- 注意编号用unsigned long long来存，不然有些用例过不了。 
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    typedef pair<TreeNode*,unsigned long long> pti;
+    int widthOfBinaryTree(TreeNode* root) {
+        if(root == nullptr) {
+            return 0;
+        }
+        deque<pti> q = {pti(root, 1)};
+        int ans = 0;
+        while(!q.empty()) {
+            int sz = q.size();
+            ans = max(ans, (int)(q.back().second - q.front().second + 1) %INT_MAX);          
+            for(int i = 0; i < sz; i++) {
+                pti cur = q.front();
+                q.pop_front();
+                TreeNode* curNode = cur.first;
+                if(curNode->left != nullptr) {
+                    q.emplace_back(curNode->left, 2 * cur.second - 1);
+                }
+                if(curNode->right != nullptr) {
+                    q.emplace_back(curNode->right, 2 * cur.second);
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 /**
@@ -1533,7 +1797,59 @@ func widthOfBinaryTree(root *TreeNode) int {
 >
 > 在一个 完全二叉树 中，除了最后一个关卡外，所有关卡都是完全被填满的，并且最后一个关卡中的所有节点都是尽可能靠左的。它可以包含 1 到 2h 节点之间的最后一级 h 。
 >
+
+**解题思路**：
+- 用层序遍历来处理。
+- 最后一个节点的根节点一定是右子树为空，如果触发最后一个节点，那么后面的节点左右子树必须都是nullptr，不然就不是完全二叉树。
+- 中间的过程不能出现左子树为空右子树不为空的情况，这样也不是完全二叉树。
+
 ::: code-tabs
+@tab cpp
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool isCompleteTree(TreeNode* root) {
+        deque<TreeNode*> q = {root};
+        int flag = 1;
+        while(!q.empty()) {
+            int sz = q.size();
+            for(int i = 0; i < sz; i++) {
+                TreeNode* cur = q.front();
+                q.pop_front();
+                if(flag == 1) {
+                    if(cur->right == nullptr) {
+                        flag = 0;
+                    }else if(cur->left == nullptr && cur->right != nullptr) {
+                        return false;
+                    }
+                }else {
+                    if(cur->left != nullptr || cur->right != nullptr) {
+                        return false;
+                    }
+                }
+                if(cur->left != nullptr) {
+                    q.emplace_back(cur->left);
+                }
+                if(cur->right != nullptr) {
+                    q.emplace_back(cur->right);
+                }
+            }
+        }
+        return true;
+    }
+};
+```
 @tab java
 ```java
  class Solution {
