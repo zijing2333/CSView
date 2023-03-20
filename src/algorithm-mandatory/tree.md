@@ -1904,6 +1904,7 @@ func isCompleteTree(root *TreeNode) bool {
 >
 > 提示: 输入输出格式与 LeetCode 目前使用的方式一致，详情请参阅 LeetCode 序列化二叉树的格式。你并非必须采取这种方式，你也可以采用其他的方法解决这个问题。
 >
+
 ::: code-tabs
 @tab java
 ```java

@@ -1,5 +1,40 @@
 ### 手撕快排
+::: code-tabs
 
+@tab cpp
+```cpp
+class Solution {
+public:
+    void quickSort(vector<int>& arr, int l, int r) {
+        if(l >= r) {
+            return;
+        }
+        int randIdx = l + rand() % (r - l + 1);
+        swap(arr[randIdx], arr[r]);
+        int cl = l - 1, cr = r; 
+        //快排partation不能有idx++
+        for(int idx = l; idx < cr;) {
+            if(arr[idx] < arr[r]) {
+                swap(arr[idx++], arr[++cl]);
+            }else if(arr[idx] > arr[r]) {
+                swap(arr[idx], arr[--cr]);
+            }else {
+                idx++;
+            }
+        }
+        swap(arr[cr++], arr[r]);
+        quickSort(arr, l, cl);
+        quickSort(arr, cr, r);
+    }
+
+    vector<int> sortArray(vector<int>& nums) {
+        int n = nums.size();
+        quickSort(nums, 0, n - 1);
+        return nums;
+    }
+};
+```
+@tab golang
 ```go
 func sortArray(nums []int) []int {
     // 快速排序，基于比较，不稳定算法，时间平均O(nlogn)，最坏O(n^2)，空间O(logn)
@@ -44,6 +79,43 @@ func sortArray(nums []int) []int {
 
 ### 手撕堆排
 
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    void heapify(vector<int>& arr, int root, int size) {
+        int left = 2*root + 1;
+        while(left < size) {
+            int maxIdx = (left + 1 < size && arr[left + 1] > arr[left]) ? left + 1 : left;
+            if(arr[root] > arr[maxIdx]) {
+                return;
+            }
+            swap(arr[root], arr[maxIdx]);
+            root = maxIdx;
+            left = 2 * root + 1;
+        }
+    }
+
+    void heapSort(vector<int>& arr) {
+        int n = arr.size();
+        for(int i = n - 1; i >= 0; i--) {
+            heapify(arr, i, n);
+        }
+        for(int i = n - 1; i >= 0; i--) {
+            swap(arr[0], arr[i]);
+            heapify(arr, 0, i);
+        }
+    }
+    vector<int> sortArray(vector<int>& nums) {
+        int n = nums.size();
+        heapSort(nums);
+        return nums;
+    }
+};
+```
+@tab golang
 ```go
 func sortArray(nums []int) []int {
     // 堆排序-大根堆，升序排序，基于比较交换的不稳定算法，时间O(nlogn)，空间O(1)-迭代建堆
@@ -97,6 +169,45 @@ func sortArray(nums []int) []int {
 
 ### 手撕归并
 
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    void mergeSort(vector<int>& arr, int l, int r) {
+        if(l >= r) {
+            return ;
+        }
+        int m = l + (r - l)/2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        vector<int> tmp(r - l + 1);
+        int idx = 0;
+        int il = l, ir = m + 1;
+        while(il <= m || ir <= r) {
+            int val = il <= m ? arr[il] : INT_MAX;
+            int var = ir <= r ? arr[ir] : INT_MAX;
+            if(val < var) {
+                tmp[idx] = val;
+                il++;
+            }else {
+                tmp[idx] = var;
+                ir++;
+            }
+            idx++;
+        }
+        for(int i = 0; i < r - l + 1; i++) {
+            arr[i + l] = tmp[i];
+        }
+    }
+    vector<int> sortArray(vector<int>& nums) {
+        int n = nums.size();
+        mergeSort(nums, 0, n - 1);
+        return nums;
+    }
+};
+```
 ```go
 //n为要排序数组的元素个数
 func MergeSort(array *[]int, n int) {

@@ -10,6 +10,35 @@ author: 枫长
 >
 > 你可以按任意顺序返回答案。
 
+
+**解题思路**：
+- 正常思路是两遍遍历，实际上每个节点对访问了两次。
+- 我们可以用hash表来存一下，要么第一次访问时节点对对应的节点就在hash表里，要么不再就加进去，等着另外一个节点访问。
+
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int,int> hash;
+        vector<int> ans(2);
+        for(int i = 0; i < nums.size(); i++) {
+            if(hash.count(target - nums[i])) {
+                ans[0] = hash[target - nums[i]];
+                ans[1] = i;
+                return ans;
+            }
+            hash[nums[i]] = i;
+        }
+        return ans;
+    }
+};
+```
+
+@tab golang
+
 ```go
 func twoSum(nums []int, target int) []int {
     m := make(map[int]int)
@@ -368,6 +397,29 @@ func trap(height []int) int {
 
 > 给定一个 n 个元素有序的（升序）整型数组 nums 和一个目标值 target  ，写一个函数搜索 nums 中的 target，如果目标值存在返回下标，否则返回 -1。
 
+**解题思路**：
+- 经典二分，二分的本质是维护二段性，一段符合某个性质，另一段不符合，那么搜索范围就可以缩小。
+
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int l=0,r=nums.size()-1;
+        while(l < r){
+            int m = l + (r - l)/2;
+            if(nums[m] >= target) r = m;
+            else l = m + 1;
+        }
+        if(nums[l] == target) return l;
+        else return -1;
+    }
+};
+```
+@tab golang
+
 ```go
 func search(nums []int, target int) int {
     for l, r := 0, len(nums)-1; l <= r; {
@@ -397,7 +449,41 @@ func search(nums []int, target int) int {
 > 假设环境不允许存储 64 位整数（有符号或无符号）。
 >
 
-```GO
+**解题思路**：
+- 如果不超出范围的整数反转很简单，这道题的考点就在于超过范围，因为INT_MIN的存在所以用负数来搜，
+- 如果ans < INT_MIN/10，那么下一次一定超，
+- 或者ans == INT_MIN/10 且 x % 10 < INT_MIN % 10，那么也会超
+
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+
+    int reverse(int x) {
+        int sign = x > 0;
+        if(x > 0) x = -x;
+        int INTx = INT_MIN / 10;
+        int INTy = INT_MIN % 10;
+        int ans = 0;
+        while(x < 0){
+            if(ans < INTx || (ans == INTx && x%10 < INTy)){
+                return 0;
+            }
+            ans = 10 * ans + x%10;
+            x /= 10;
+        }
+        if(ans == INT_MIN && !sign) return 0; //注意如果是INT_MIN且符号是正的，这个也不能转换
+        if(sign) ans = -ans;
+        return ans;
+    }
+};
+```
+
+@tab golang
+
+```go
 func reverse(x int) int {
 	res := 0
 	for x != 0 {
@@ -424,6 +510,28 @@ func reverse(x int) int {
 > 注意：不允许使用任何内置指数函数和算符，例如 pow(x, 0.5) 或者 x ** 0.5 。
 >
 
+**解题思路**：
+- 二分，时间复杂度O(logX)
+  
+::: code-tabs
+
+```cpp
+class Solution {
+public:
+    int mySqrt(int x) {
+        if(x == 0 || x == 1) return x;
+        //查的是sqrt(x)，如果正常是大于等于sqrt(x)的第一个整数，但答案要的是取整的
+        //注意x2=x的情况，此时不能减，x=0或1
+        int l = 0, r = x;
+        while(l < r){
+            long m = l + (r - l)/2;
+            if(m * m > x) r = m;
+            else l = m + 1;
+        }
+        return l - 1;
+    }
+};
+```
 ```go
 // 精确到个位
 func mySqrt(x int) int {
@@ -465,6 +573,39 @@ func mySqrt(x float64) float64 {
 > 找出该数组中满足其和 ≥ target 的长度最小的 连续子数组 [numsl, numsl+1, ..., numsr-1, numsr] ，并返回其长度。如果不存在符合条件的子数组，返回 0 。
 >
 
+**解题思路**：
+- 双指针的思路，双指针维持的窗口满足其和 ≥ target，且尽量让窗口最小。
+- 每次滑动一下右指针，更新一下窗口元素和；然后只要左指针滑动之后窗口元素和依然 >= target，那么就接着缩小窗口。
+
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int l = 0;
+        int sum = 0;
+        int ans = INT_MAX;
+        for(int r = 0; r < n; r++) {
+            sum += nums[r];
+            while(l < r && sum - nums[l] >= target) {
+                sum -= nums[l];
+                l++;
+            }
+            if(sum >= target) {
+                ans = min(ans, r - l + 1);
+            }
+        }
+        if(ans == INT_MAX) {
+            return 0;
+        }
+        return ans;
+    }
+};
+```
+@tab golang
 ```go
 func minSubArrayLen(target int, nums []int) int { 
     i := 0
@@ -652,6 +793,44 @@ func searchMatrix(matrix [][]int, target int) bool {
 > 每个测试用例将有一个内部参数 n，即你实现的函数 rand10() 在测试时将被调用的次数。请注意，这不是传递给 rand10() 的参数。
 >
 
+::: code-tabs
+
+**解题思路**：
+- 这种用rand m实现rand n的题目，都是先用rand m构建rand 2。
+- 然后找到大于n的2的整数次幂，比如10就是16，用rand 2去roll每一位。
+- roll出来的结果大于10的话就重roll。
+
+@tab cpp
+```cpp
+// The rand7() API is already defined for you.
+// int rand7();
+// @return a random integer in the range 1 to 7
+
+class Solution {
+public:
+    int rand2(){
+        int val = 7;
+        while(val == 7) val=rand7(); 
+        if(val <= 3){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+    int rand10() {
+        int val = 16;
+        while(val >= 10){
+            val = 0;
+            for(int i = 0; i < 4; i++){
+                val = (val << 1) + rand2();
+            }
+        }
+        return val + 1;
+    }
+};
+```
+
+@tab golang
 ```go
 func rand10() int {
     for{
@@ -671,6 +850,53 @@ func rand10() int {
 
 > 给定整数 `n` 和 `k`，返回 `[1, n]` 中字典序第 `k` 小的数字。
 
+**解题思路**：
+- 这道题解法直接看是字典树，但是时间复杂度O(n)，一定会超时。
+- 我们是能计算以x为前缀且最大为limit的数字个数的，这样我们就可以剪枝。
+- x从1开始，查询以x为前缀的个数，如果cnt小于k，就说明以x为前缀的数排序全在k之前，x++
+- 如果cnt 大于 k，就说明第k个在以x为前缀的数里面，给x乘10，缩小范围
+ 
+::: code-tabs
+```cpp
+class Solution {
+public:
+    int getLen(int val){
+        int cnt=0;
+        while(val>0){
+            val/=10;
+            cnt++;
+        }
+        return cnt;
+    }
+    //得到以x为前缀的个数
+    int getCnt(int x,int limit){
+        int lenX=getLen(x),lenL=getLen(limit);
+        int res=0;
+        for(int i=lenX;i<lenL;i++){
+            res+=pow(10,i-lenX);
+        }
+        int t=limit/pow(10,lenL-lenX);
+        if(t==x) res+=limit-x*pow(10,lenL-lenX)+1;
+        else if(t>x) res+=pow(10,lenL-lenX);
+        return res;
+    }
+    int findKthNumber(int n, int k) {
+        int x=1;
+        while(k>1){
+            int num=getCnt(x,n);
+            if(num<k){          //也就是说当前以他为前缀的所有数都ok
+                x++;
+                k-=num;
+            }else if(num>=k){   //第k个数在以他为前缀的个数里面
+                x*=10;
+                k--;            //去掉x本身，接着往前算一轮。
+            }
+        }
+        return x;
+    }
+};
+```
+@tab golang
 ```go
 func findKthNumber(n int, k int) int {
 	p := 1
@@ -702,6 +928,39 @@ func findKthNumber(n int, k int) int {
 
 ### [239.滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/)
 
+**解题思路**：
+- 经典题目，我们用一个双端队列来保存窗口在滑动过程中可能成为最大值的元素。
+- 这个双端队列保存的是从队头到队尾依次可以成为最大值的元素，滑动r的时候往进加，滑动l的时候看看l是否和队头元素下标一样，一样就pop队头。
+- 这个双端队列压入元素的方式是这样，从队尾开始压入，如果队尾元素比当前元素小，那说明队尾元素比当前元素旧，还比当前元素小，那它必不能成为最大值
+- 所以就一直pop直到空或者队尾元素比当前元素大，然后把当前元素压进去。
+
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        deque<int> q;
+        int n = nums.size();
+        vector<int> ans(n - k + 1);
+        for(int i = 0; i < n; i++) {
+            while(!q.empty() && nums[i] > nums[q.front()]) {
+                q.pop_front();
+            }
+            q.emplace_front(i);
+            if(i >= k && i - k == q.back()) {
+                q.pop_back();
+            }
+            if(i >= k - 1) {
+                ans[i - k + 1] = nums[q.back()];
+            }
+        }
+        return ans;
+    }
+};
+```
+@tab golang
 ```go
 type MaxQueue struct{
     Queue []int
@@ -772,6 +1031,33 @@ func maxSlidingWindow(nums []int, k int) []int {
 > 子数组 是数组的连续子序列。
 >
 
+**解题思路**：
+- 动态规划问题，最大的乘积有可能从两个地方转移，之前最小的或者之前最大的。
+ 
+::: code-tabs
+
+@tab cpp
+```cpp
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int n = nums.size();
+        int dpMax = nums[0], dpMin = nums[0];
+        int ans = nums[0];
+        for(int i = 1; i < n; i++) {
+            int tmpMax = max(dpMax * nums[i], dpMin * nums[i]);
+            int tmpMin = min(dpMax * nums[i], dpMin * nums[i]);
+            tmpMax = max(max(tmpMax, tmpMin), nums[i]);
+            tmpMin = min(min(tmpMax, tmpMin), nums[i]);
+            ans = max(ans, tmpMax);
+            dpMax = tmpMax;
+            dpMin = tmpMin;
+        }
+        return ans;
+    }
+};```
+@tab golang
 ```go
 func maxProduct(nums []int) int {
     n := len(nums)
@@ -815,6 +1101,60 @@ func Min(a, b int) int {
 
 ### [79.单词搜索](https://leetcode.cn/problems/word-search/)
 
+**解题思路**：
+- 数据量很小，暴力搜索即可，遍历每一位然后以每一位为开头尝试搜出结果，搜索就dfs。
+
+::: code-tabs
+@tab cpp
+```cpp
+class Solution {
+public:
+    vector<vector<int>> turn = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    int flag = 0;
+    bool dfs(vector<vector<char>>& board, vector<vector<bool>>& visit, string& word, int idx, int x, int y) {
+        int n = board.size(), m = board[0].size();
+        if(flag) return true;
+        if(!(x >= 0 && x < n && y >=0 && y < m)) {
+            return false;
+        }
+        if(idx == word.size()) {
+            return true;
+        }
+        for(int i = 0; i < 4; i++) {
+            int nx = x + turn[i][0];
+            int ny = y + turn[i][1];
+            if(nx >= 0 && nx < n && ny >= 0 && ny < m) {
+                if(!flag && !visit[nx][ny] && word[idx] == board[nx][ny]) {
+                    visit[nx][ny] = true;
+                    if(dfs(board, visit, word, idx + 1, nx, ny)) {
+                        flag = 1;
+                        return true;
+                    }
+                    visit[nx][ny] = false;
+                }
+            }
+        }
+        return false;
+    }
+    bool exist(vector<vector<char>>& board, string word) {
+        int n = board.size(), m = board[0].size();
+        vector<vector<bool>> visit(n, vector<bool>(m));
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < m; j++) {
+                if(board[i][j] == word[0]) {
+                    visit[i][j] = true;
+                    if(dfs(board, visit, word ,1 ,i ,j)) {
+                        return true;
+                    }
+                    visit[i][j] = false;
+                }
+            }
+        }
+        return false;
+    }
+};
+```
+@tab golang
 ```go
 func exist(board [][]byte, word string) bool {
   
@@ -874,6 +1214,16 @@ func search (i, j int, board [][]byte, words []byte) bool {
 > 请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
 >
 
+**解题思路**：
+- 这道题直接想动态规划的解法比较费劲，建议直接并查集暴力搞掉。
+
+::: code-tabs
+
+@tab cpp
+```cpp
+
+```
+@tab golang
 ```go
 func longestConsecutive(nums []int) int {
     sort.Ints(nums)
@@ -954,6 +1304,32 @@ func longestConsecutive(nums []int) int {
 >
 > 你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
 
+**解题思路**：
+- 旋转图像其实就是横轴和纵轴做轴对称拼出来的，可以想一个点怎么通过做轴对称得到旋转90度。
+
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n = matrix.size();
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n/2; j++) {
+                swap(matrix[j][i], matrix[n - 1 - j][i]);
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            for(int j = i + 1; j < n; j++){
+                swap(matrix[i][j], matrix[j][i]);
+            }
+        }
+        return;
+    }
+};
+```
+@tab golang
 ```go
 func rotate(matrix [][]int)  {
     n := len(matrix)
@@ -982,6 +1358,41 @@ func rotate(matrix [][]int)  {
 >
 > 你可以假设数组是非空的，并且给定的数组总是存在多数元素。
 
+**解题思路**：
+- 摩根投票法，用一个选举位，记录当前选举位有多少个数，然后遍历数组
+- 如果和选举位相同，就选举票数++，如果不同，就选举票数--
+- 如果选举票数为0，就重新设置选举位
+- 最后返回选举位数字即可。
+- 
+::: code-tabs
+
+@tab cpp
+```cpp
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int cand = -1;
+        int candNum = 0;
+        int n = nums.size();
+        for(int i = 0; i < n; i++) {
+            if(cand == -1) {
+                cand = nums[i];
+                candNum = 1;
+            }else if(nums[i] != cand) {
+                candNum--;
+                if(candNum == 0) {
+                    cand = -1;
+                    candNum = 0;
+                }
+            }else {
+                candNum ++;
+            }
+        }
+        return cand;
+    }
+};
+```
+@tab golang
 ```go
 func majorityElement(nums []int) int {
     major := 0
@@ -1011,7 +1422,33 @@ func majorityElement(nums []int) int {
 > 给定一组非负整数 `nums`，重新排列每个数的顺序（每个数不可拆分）使之组成一个最大的整数。
 >
 > **注意：**输出结果可能非常大，所以你需要返回一个字符串而不是整。
+> 
+::: code-tabs
+**解题思路**：
+- 自定义一下排序，对于两个字符串a, b 如果a前b后大于b前a后，就返回1，反之返回0。
 
+@tab cpp
+```cpp
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        vector<string> numString;
+        for(auto n:nums){
+            numString.push_back(to_string(n));
+        }
+        sort(numString.begin(),numString.end(),[](string a,string b) {
+            return a + b > b + a;
+        });
+        if(numString[0] == "0") return "0";
+        string res;
+        for(int i = 0; i < numString.size(); i++) {
+            res += numString[i];
+        }
+        return res;
+    }
+};
+```
+@tab golang
 ```go
 func Map(vs []int, f func(int) string) []string {
     vsm := make([]string, len(vs))
