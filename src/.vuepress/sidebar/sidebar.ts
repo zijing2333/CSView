@@ -202,6 +202,17 @@ export const sideBar = sidebar({
             ],
         },
 
+        {text: "🔵 双指针",
+            collapsible: true,
+            prefix:"twoPoint",
+            children: [
+                {
+                    text: "双指针必刷题",
+                    link: "01",
+                },
+            ],
+        },
+
         {text: "🔶 其他",
             collapsible: true,
             prefix:"other",
