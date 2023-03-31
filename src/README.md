@@ -19,6 +19,12 @@ actions:
     link: /article
 
 features:
+
+  - title: 必刷算法150题
+    icon: zhinanzhidao-xianxing
+    details: 可以覆盖你面试会遇到90%题目的150道算法题，由作者精心挑选并整理排序
+    link: /algorithm-mandatory
+    
   - title: 使用指南
     icon: zhinanzhidao-xianxing
     details: 介绍网站的一些基本功能，阅读指南有助于提高学习效率
@@ -34,6 +40,9 @@ features:
     icon: hongbao1
     details: 可以请作者喝一杯奶茶，或者去Github点一个免费的star
     link: /reward
+
+
+
 
 
 

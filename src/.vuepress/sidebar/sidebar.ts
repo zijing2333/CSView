@@ -36,13 +36,13 @@ export const sideBar = sidebar({
       { text: "🟣 集群", link: "colony"},
     ],
 
-    "/cpp/":[
-      { text: "🔴 概述", link: "summary"},
-      { text: "🔵 数据结构和关键字", link: "data-structure"},
-      { text: "🟡 函数", link: "function"},
-      { text: "🟢 编译和内存管理", link: "compilation-memory"},
+    // "/cpp/":[
+    //   { text: "🔴 概述", link: "summary"},
+    //   { text: "🔵 数据结构和关键字", link: "data-structure"},
+    //   { text: "🟡 函数", link: "function"},
+    //   { text: "🟢 编译和内存管理", link: "compilation-memory"},
 
-    ],
+    // ],
 
     "/java/":[
       { text: "🔴 基础", link: "summary"},
@@ -110,6 +110,22 @@ export const sideBar = sidebar({
             ],
         },
 
+        {text: "🔵 栈和队列",
+            collapsible: true,
+            prefix:"stark-queue",
+            children: [
+                {
+                    text: "栈和队列必刷题第一部分（1-4题）",
+                    link: "01",
+                },
+                {
+                    text: "栈和队列必刷题第二部分（5-8题）",
+                    link: "02",
+                },
+            ],
+        },
+      
+
         {text: "🟢 字符串",
             collapsible: true,
             prefix:"string",
@@ -125,44 +141,31 @@ export const sideBar = sidebar({
             ],
         },
 
-
         {text: "🟣 数组",
-            collapsible: true,
-            prefix:"array",
-            children: [
-                {
-                    text: "数组必刷题第一部分（1-7题）",
-                    link: "01",
-                },
-                {
-                    text: "数组必刷题第二部分（8-14题）",
-                    link: "02",
-                },
-                {
-                    text: "数组必刷题第三部分（15-21题）",
-                    link: "03",
-                },
-                {
-                    text: "数组必刷题第三部分（22-26题）",
-                    link: "04",
-                },
-            ],
-        },
+        collapsible: true,
+        prefix:"array",
+        children: [
+            {
+                text: "数组必刷题第一部分（1-7题）",
+                link: "01",
+            },
+            {
+                text: "数组必刷题第二部分（8-14题）",
+                link: "02",
+            },
+            {
+                text: "数组必刷题第三部分（15-21题）",
+                link: "03",
+            },
+            {
+                text: "数组必刷题第三部分（22-26题）",
+                link: "04",
+            },
+        ],
+    },
+        
 
-        {text: "🔵 栈和队列",
-            collapsible: true,
-            prefix:"stark-queue",
-            children: [
-                {
-                    text: "栈和队列必刷题第一部分（1-4题）",
-                    link: "01",
-                },
-                {
-                    text: "栈和队列必刷题第二部分（5-8题）",
-                    link: "02",
-                },
-            ],
-        },
+        
 
         {text: "🟠 动态规划",
             collapsible: true,
