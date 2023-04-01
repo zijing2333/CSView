@@ -18,49 +18,7 @@ actions:
   - text: 精品文章 📄
     link: /article
 
-features:
-
-  - title: 必刷算法150题
-    icon: zhinanzhidao-xianxing
-    details: 覆盖面试会遇到90%题目的150道算法题，150题不会做不要去面试！
-    link: /algorithm-mandatory
-
-
-  - title: 操作系统
-    icon: zhinanzhidao-xianxing
-    details: 精选的操作系统面试题，涵盖了进程管理、内存管理、文件系统、同步与通信等核心主题。
-    link: /os
-
-  - title: 计算机网络
-    icon: zhinanzhidao-xianxing
-    details: 计算机网络面试常问的题目，包括TCP、IP、HTTP等核心主题。
-    link: /network
-
-  - title: 数据库
-    icon: zhinanzhidao-xianxing
-    details: 数据库面试常问的一些题目，覆盖了日志、索引、锁、存储引擎等高频面试题。
-    link: /network
-
-  - title: C++
-    icon: zhinanzhidao-xianxing
-    details: C++常问的一些题目。
-    link: /cpp
-
-  - title: Java
-    icon: zhinanzhidao-xianxing
-    details: Java常问的一些题目，虽然很多，但是不得不看。
-    link: /java
-
-  - title: Golang
-    icon: zhinanzhidao-xianxing
-    details: Golang常问的一些面试题目，GMP模型、channel详解，面试常问的都有了。
-    link: /golang
-
-  - title: Redis
-    icon: zhinanzhidao-xianxing
-    details: Redis面试常问的一些题目。
-    link: /redis
-    
+features:  
   - title: 使用指南
     icon: zhinanzhidao-xianxing
     details: 介绍网站的一些基本功能，阅读指南有助于提高学习效率

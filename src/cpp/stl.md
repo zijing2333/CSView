@@ -1,3 +1,10 @@
+---
+title: STL
+author: ["comewei","jjd","枫长","LH"]
+---
+
+
+
 ### 什么是STL？
 
 C++的STL（Standard Template Library，标准模板库）是C++编程语言中的一个功能强大且广泛使用的库，它提供了一系列通用的模板类和函数，可以帮助程序员更高效地处理各种数据结构和算法问题。STL主要包含以下几个组件：
