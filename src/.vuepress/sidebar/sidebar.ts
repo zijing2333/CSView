@@ -37,11 +37,15 @@ export const sideBar = sidebar({
     ],
 
     "/cpp/":[
-      { text: "🔴 概述", link: "summary"},
-      { text: "🔵 数据结构和关键字", link: "data-structure"},
-      { text: "🟡 函数", link: "function"},
-      { text: "🟢 编译和内存管理", link: "compilation-memory"},
-
+      { text: "🔴 C++基础概念和语法", link: "summary"},
+      { text: "🟤 数据类型和类型转换", link: "dataTypesAndTypeConversions"},
+      { text: "🔵 指针和引用", link: "pointersAndReferences"},
+      { text: "🟢 函数和运算重载符", link: "functionAndOperationOverloaders"},
+      { text: "🟣 继承和多态", link: "inheritanceAndPolymorphism"},
+      { text: "🟠 内存管理", link: "memoryManagement"},
+      { text: "🟡 编译和链接", link: "compileAndLink"},
+      { text: "⚫ C++11/14/17/20新特性", link: "newFeatures"},
+      { text: "⚪ STL", link: "stl"},
     ],
 
     "/java/":[
