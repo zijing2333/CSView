@@ -6,19 +6,21 @@ sidebar: false
 ---
 
 
-### [3.无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)    (2次)
+### [3.无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)(2次)
 
-### [手撕单例模式](./handtearing.md#手撕单例模式)   (2次)
+### [手撕单例模式](./handtearing.md#手撕单例模式)(2次)
 
-### [124.二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)   (2次)
+### [124.二叉树中的最大路径和](https://leetcode.cn/problems/binary-tree-maximum-path-sum/)(2次)
 
-### [3.无重复字符的最长子串](https://leetcode.cn/problems/intersection-of-two-linked-lists/)  (2次)
+### [3.无重复字符的最长子串](https://leetcode.cn/problems/intersection-of-two-linked-lists/)(2次)
 
-### [739.每日温度](https://leetcode.cn/problems/daily-temperatures/)     (1次)
+### [739.每日温度](https://leetcode.cn/problems/daily-temperatures/)(1次)
+
+### [143. 重排链表](https://leetcode.cn/problems/reorder-list/)(1次)
 
 ### 常见的排序算法 (1次)
 
-### [518.零钱兑换 II](https://leetcode.cn/problems/coin-change-ii/)     (1次)
+### [518.零钱兑换 II](https://leetcode.cn/problems/coin-change-ii/) (1次)
 
 ### [43.字符串相乘](https://leetcode.cn/problems/multiply-strings) (1次)
 
@@ -42,4 +44,4 @@ sidebar: false
 
 ### 二叉树BFS  (1次)
 
-
+### 常见排序算法时间复杂度(1次)
