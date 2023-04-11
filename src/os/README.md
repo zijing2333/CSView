@@ -1,27 +1,25 @@
 ---
 title: 操作系统
-author: jjd
+pageInfo: false
 editLink: false
 comment: false
-pageInfo: false
-
 ---
 
-
-
-# [概述](./summary.md)
-
-# [概述](./summary.md)
-
-# [进程和线程](./process.md)
-
-# [Linux](./linux.md)
-
-# [操作系统其他知识](./other.md)
+------
 
 
 
+### [计算机系统基础](./summary.md)
 
+### [并发](./concurrency.md)
+
+### [内存管理](./memory-management.md)
+
+### [进程与线程管理](./process.md)
+
+### [文件系统](./filesystem.md)
+
+### [服务器编程](./serverprogramming.md)
 
 
 

@@ -67,12 +67,15 @@ export const sideBar = sidebar({
     ],
 
     "/os/":[
-      { text: "🔴 概述", link: "summary"},
-      { text: "🔵 进程和线程", link: "process"},      
-      { text: "🟢 linux相关", link: "linux"},
-      { text: "🟡 其他知识", link: "other"},
+      { text: "🔴 计算机系统基础", link: "summary"},
+      { text: "🔵 并发", link: "concurrency"},      
+      { text: "🟢 内存管理", link: "memory-management"},
+      { text: "🟡 进程与线程管理", link: "process"},
+      { text: "🟣 文件系统", link: "filesystem"},
+      { text: "🟠 服务器编程", link: "serverprogramming"},
     ],
-
+    
+    
 
     "/algorithm-mandatory/":[
       { text: "🔴 链表", link: "linklist"},
