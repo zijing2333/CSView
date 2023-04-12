@@ -8,7 +8,42 @@ author: 枫长
 >
 > 注意：不能使用任何内置的 BigInteger 库或直接将输入转换为整数。
 >
+
+**解题思路**：
+- 大数乘法经典题目，注意一下进位。
+
 ::: code-tabs
+@tab cpp
+```cpp
+class Solution {
+public:
+    string multiply(string num1, string num2) {
+        if(num1 == "0" || num2 == "0") {
+            return "0";
+        }
+        int n1 = num1.size(), n2 = num2.size();
+        vector<int> ans(n1 + n2);
+        string res = "";
+        for(int i = n1 - 1; i >= 0; i--) {
+            for(int j = n2 - 1; j >= 0; j--) {
+                int a = num1[i] - '0';
+                int b = num2[j] - '0';
+                ans[i + j + 1] += a * b;  
+            }
+        }
+        int c = 0;
+        for(int i = n1 + n2 - 1; i > 0; i--) {
+            ans[i - 1] += ans[i] / 10;
+            ans[i] %= 10;
+        }
+        int idx = ans[0] == 0 ? 1 : 0;
+        for(int i = idx; i < n1 + n2; i++) {
+            res.push_back(ans[i] + '0');
+        }
+        return res;
+    }
+};
+```
 
 @tab java
 ```java
@@ -84,7 +119,41 @@ func multiply(num1 string, num2 string) string {
 > 将前面步骤读入的这些数字转换为整数（即，"123" -> 123， "0032" -> 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。
 > 如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。
 > 返回整数作为最终结果。
+
+**解题思路**：
+- 按位字符串处理即可，先去掉前导0，然后再判断符号。
+
 ::: code-tabs
+@tab cpp
+```cpp
+class Solution {
+public:
+    int myAtoi(string s) {
+        int idx=0,n=s.size();
+        while(idx<n && s[idx]==' ') idx++;
+        int sign=1;
+        if(s[idx]=='-'){
+            sign=0;
+            idx++;
+        }else if(s[idx]=='+'){
+            idx++;
+        }
+        int ans=0;
+        while(idx<n && s[idx]>='0' && s[idx]<='9'){
+            int cur=-(s[idx]-'0');
+            if(ans<INT_MIN/10 || (ans==INT_MIN/10 && cur<INT_MIN%10)){
+                ans=INT_MIN;
+                break;
+            }
+            idx++;
+            ans=10*ans+cur;
+        }
+        if(ans==INT_MIN && sign) return INT_MAX;
+        if(sign) ans=-ans;
+        return ans;
+    }
+};
+```
 
 @tab java
 ```java

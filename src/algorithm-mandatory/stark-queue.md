@@ -11,7 +11,44 @@ author: 枫长
 > 左括号必须用相同类型的右括号闭合。
 > 左括号必须以正确的顺序闭合。
 > 每个右括号都有一个对应的相同类型的左括号。
+
+**解题思路**：
+- 跟括号匹配其实一个思路，只不过这次变成了3种括号，碰到左括号就压栈，碰到右括号就看栈顶左括号匹不匹配，不匹配就g，匹配就把栈顶pop掉。
+
 ::: code-tabs
+@tab cpp
+```cpp
+class Solution {
+public:
+    bool isValid(string s) {
+        vector<char> st;
+        for(int i = 0; i < s.size(); i++) {
+            if(s[i] == '(' || s[i] == '[' || s[i] == '{') {
+                st.emplace_back(s[i]);
+            }else if(s[i] == ')'){
+                if(!st.empty() && st.back() == '(') {
+                    st.pop_back();
+                }else {
+                    return false;
+                }
+            }else if(s[i] == ']') {
+                if(!st.empty() && st.back() == '[') {
+                    st.pop_back();
+                }else {
+                    return false;
+                }
+            }else if(s[i] == '}') {
+                if(!st.empty() && st.back() == '{') {
+                    st.pop_back();
+                }else {
+                    return false;
+                }
+            }
+        }
+        return st.size() == 0;
+    }
+};
+```
 @tab java
 ```java
 class Solution {
@@ -75,8 +112,55 @@ func isValid(s string) bool {
 >
 > 此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
 >
-::: code-tabs
 
+**解题思路**：
+- 用两个栈，一个栈只要不是]就往进放东西，如果遇到了]号，那就开始处理，从当前栈将字符加到备用栈里，遇到[停止，然后把数字算出来
+- 再反过来把备用栈的数往当前栈中加几遍，最后把结果放到一个string数组。
+
+::: code-tabs
+@tab cpp
+```cpp
+class Solution {
+public:
+    string decodeString(string s) {
+        vector<char> st;
+        vector<char> stTemp;
+        vector<int> num;
+        for(int i = 0; i < s.size(); i++){
+            if(s[i] != ']') st.push_back(s[i]);
+            else{
+                while(!st.empty() && st.back()!='['){
+                    stTemp.push_back(st.back());
+                    st.pop_back();
+                }
+                if(!st.empty()) {
+                    stack.pop_back();//除去[
+                }
+                int time=0;//分离出数字
+                while(!st.empty() && st.back() >= '0' && st.back() <= '9'){
+                    num.push_back(st.back() - '0');
+                    st.pop_back();
+                }
+                for(int j = num.size() - 1; j >= 0; j--){
+                    time = 10 * time + num[j];
+                }
+                for(int j = 0; j < time; j++){//重复time次再push进栈里，注意顺序
+                    for(int k = stTemp.size() - 1; k >= 0; k--){
+                        stack.push_back(stTemp[k]);
+                    }
+                }
+                stTemp={};
+                num={};
+            }
+        }
+        string ans="";
+        for(int i=0;i<stack.size();i++){
+            ans+=stack[i];
+        }
+        return ans;
+    }
+};
+```
 @tab java
 ```java
 class Solution {
@@ -154,7 +238,70 @@ func decodeString(s string) string {
 >
 > 你只能使用标准的栈操作 —— 也就是只有push to top, peek/pop from top, size, 和 is empty操作是合法的。
 > 你所使用的语言也许不支持栈。你可以使用list或者deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。
+
+**解题思路**：
+- 两个栈实现队列，经典问题。
+- 元素入队全压入第一个栈，出队全从第二个栈中pop。
+- 如果第二个栈为空，就把第一个栈中所有元素全压入第二个栈。
+
 ::: code-tabs
+@tab cpp
+```cpp
+class MyQueue {
+public:
+    /** Initialize your data structure here. */
+        vector<int> x1;
+        vector<int> x2;
+    MyQueue() {
+        
+    }
+    
+    /** Push element x to the back of queue. */
+    void push(int x) {
+        x1.push_back(x);
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    int pop() {
+        if(x2.size()==0){
+            while(x1.size()!=0) 
+            {
+                x2.push_back(x1.back());
+                x1.pop_back();
+            }
+        }
+        int result=x2.back();
+        x2.pop_back();
+        return result;       
+    }
+    
+    /** Get the front element. */
+    int peek() {
+        if(x2.size()==0){
+            while(x1.size()!=0) 
+            {
+                x2.push_back(x1.back());
+                x1.pop_back();
+            }
+        }
+        return x2.back();  
+    }
+    
+    /** Returns whether the queue is empty. */
+    bool empty() {
+        return (x1.size()==0 && x2.size()==0);
+    }
+};
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */
+```
 @tab java
 ```java
 class MyQueue {
@@ -266,9 +413,55 @@ func (this *MyQueue) Empty() bool {
 > - int top() 获取堆栈顶部的元素。
 > - int getMin() 获取堆栈中的最小元素。
 
-::: code-tabs
-@tab java
+**解题思路**：
+- 用两个栈，一个栈保存当前push进去元素所对应的最小元素，另一个栈就是普通的push pop。
+- 所以push就push两次，一次直接push当前元素，另一次push当前最小元素
+- pop也pop两次，获取最小元素就是访问保存最小元素栈的栈顶。
 
+::: code-tabs
+@tab cpp
+```cpp
+class MinStack {
+public:
+    vector<int> st;
+    vector<int> st1;
+    MinStack() {
+
+    }
+    
+    void push(int val) {
+        if(!st1.empty()) {
+            st1.emplace_back(min(val, st1.back()));
+        }else {
+            st1.push_back(val);
+        }
+        st.emplace_back(val);
+    }
+    
+    void pop() {
+        st.pop_back();
+        st1.pop_back();
+    }
+    
+    int top() {
+        return st.back();
+    }
+    
+    int getMin() {
+        return st1.back();
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
+```
+@tab java
 ```java
 class MinStack {
     private Stack<Integer> stack;
