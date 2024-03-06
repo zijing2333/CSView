@@ -469,56 +469,6 @@ public class MergeSort {
         }
     }
 }
-public class HeapSort {
-    public static void heapSort(int[] arr) {
-        int n = arr.length;
-
-        // 构建大顶堆
-        for (int i = n / 2 - 1; i >= 0; i--) {
-            adjustHeap(arr, i, n);
-        }
-
-        // 排序
-        for (int i = n - 1; i >= 0; i--) {
-            // 交换堆顶元素和最后一个元素
-            int temp = arr[0];
-            arr[0] = arr[i];
-            arr[i] = temp;
-
-            // 调整堆
-            adjustHeap(arr, 0, i);
-        }
-    }
-
-    private static void adjustHeap(int[] arr, int i, int n) {
-        int temp = arr[i];
-
-        for (int k = 2 * i + 1; k < n; k = 2 * k + 1) {
-            // 找到左右子节点中较大的一个
-            if (k + 1 < n && arr[k] < arr[k + 1]) {
-                k++;
-            }
-
-            // 如果子节点大于父节点，则交换它们
-            if (arr[k] > temp) {
-                arr[i] = arr[k];
-                i = k;
-            } else {
-                break;
-            }
-        }
-
-        arr[i] = temp;
-    }
-
-    public static void main(String[] args) {
-        int[] arr = {3, 6, 8, 2, 4, 1, 9, 5, 7};
-        heapSort(arr);
-        for (int num : arr) {
-            System.out.print(num + " ");
-        }
-    }
-}
 ```
 
 @tab golang
